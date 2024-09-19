@@ -1,5 +1,12 @@
-export default function Home() {
+// pages/index.js
+import HighChart from "@/components/HighChart";
+const Home = () => {
   return (
-    <div>HI</div>
-  )
-}
+    <div>
+      <h1>Simple Stock Chart</h1>
+      <HighChart />
+    </div>
+  );
+};
+
+export default Home;
