@@ -4,37 +4,44 @@ import Highcharts from 'highcharts/highstock';
 import { useEffect,useState } from 'react';
 const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
 
-const HighChart = () => {
-  const [data,setData] = useState([]);
-  const [loading,setLoading] = useState(true)
+const HighChart = ({stockCode}) => {
   //data fetching
+  const [data,setData] = useState([]);
   useEffect(()=>{
     const main = async()=>{
-      const fetchData = await fetch('/api/stock-price?code=259960')
-      const rawData = await fetchData.json()
-      setData(rawData[1])
-      setLoading(false)
+      if (!stockCode) return
+      const fetchData = await fetch(`/api/stock-price?code=${stockCode}`)
+      const jsonData = await fetchData.json()
+      setData(jsonData[1])
     }
     main()
   }
-  ,[])
-  
-  /*
-  const formatting = (d)=>{
-    if (d) return d.map(i=>[new Date(i[0]).getTime(),i[1],i[2],i[3],i[4]])
+  ,[stockCode])
 
-  }*/
   const options = {
+    chart:{
+      height:'60%'
+    },
+    accessibility:{
+      enabled: false
+    },
+    credits:{
+      enabled: false
+    },
     rangeSelector: {
       selected: 1
     },
+    /*
     title: {
       text: 'Stock Price Candlestick Chart'
     },
+    */
     xAxis: {
       type: 'datetime',
-      minrange: 30 * 24 * 3600 * 1000,
-      //ordinal:true,
+      //minrange: 30 * 24 * 3600 * 1000,
+    },
+    yAxis: {
+      offset:50
     },
     series: [{
       type: 'candlestick',
@@ -54,7 +61,7 @@ const HighChart = () => {
     },
   };
   return (
-    loading ? <div>Loading</div> : 
+    data.length === 0 ? <div>Select Stock</div> :
     <div>
     <HighchartsReact
       highcharts={Highcharts}

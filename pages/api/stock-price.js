@@ -14,7 +14,6 @@ export default async function handler(req,res){
         const chart_data = data.map(price=>{
             //date,open,high,low,close
             const time = new Date(price.trading_date).getTime() + 9*60*60*1000
-            console.log(price.trading_date)
             return [time,price.open_price,price.high_price,price.low_price,price.close_price]
         })
         res.status(200).json([info,chart_data])
