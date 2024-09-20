@@ -4,19 +4,19 @@ import Highcharts from 'highcharts/highstock';
 import { useEffect,useState } from 'react';
 const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
 
-const HighChart = ({stockCode}) => {
+const HighChart = ({stockCode,period}) => {
   //data fetching
   const [data,setData] = useState([]);
   useEffect(()=>{
     const main = async()=>{
       if (!stockCode) return
-      const fetchData = await fetch(`/api/stock-price?code=${stockCode}`)
+      const fetchData = await fetch(`/api/stock-price?code=${stockCode}&period=${period}`)
       const jsonData = await fetchData.json()
       setData(jsonData[1])
     }
     main()
   }
-  ,[stockCode])
+  ,[stockCode,period])
 
   const options = {
     chart:{
@@ -38,10 +38,9 @@ const HighChart = ({stockCode}) => {
     */
     xAxis: {
       type: 'datetime',
-      //minrange: 30 * 24 * 3600 * 1000,
     },
     yAxis: {
-      offset:50
+      offset:30
     },
     series: [{
       type: 'candlestick',
