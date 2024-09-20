@@ -25,17 +25,55 @@ const HighChart = ({data}) => {
     xAxis: {
       type: 'datetime',
     },
-    yAxis: {
-      offset:30
-    },
-    series: [{
-      type: 'candlestick',
-      name: 'Stock Price',
-      data: data[1],
-      tooltip: {
-        valueDecimals: 0
+    yAxis: [{
+      /*
+      title: {
+        text: 'OHLC'
+      },
+      */
+      height: '70%',
+      lineWidth: 2,
+      resize: {
+        enabled: true
+      },
+      offset: 20,
+      labels:{
+        align:'left',
+        x:3
       }
-    }],
+      
+    }, {
+      /*
+      title: {
+        text: 'Volume'
+      },
+      */
+      top: '72%',
+      height: '28%',
+      lineWidth: 2,
+      offset: 20,
+      labels:{
+        align:'left',
+        x:3
+      }
+  }],
+    series: [
+      {
+        type: 'candlestick',
+        name: 'Stock Price',
+        data: data[1],
+        tooltip: {
+          valueDecimals: 0
+        },
+        yAxis:0
+      },
+      {
+        type: 'column',
+        name: 'Volume',
+        data: data[2],
+        yAxis:1
+      }
+    ],
     plotOptions: {
       candlestick: {
         color: 'dodgerblue',

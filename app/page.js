@@ -23,6 +23,7 @@ const Home = () => {
     getData()
   }
   ,[stock,period])
+  //RENDER
   return (
     <div>
       <TopBar onChangeStock={handleStock} onChangePeriod={handlePeriod}/>
