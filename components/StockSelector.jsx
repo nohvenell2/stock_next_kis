@@ -30,9 +30,9 @@ const StockSelector = ({ onSelect }) => {
 const customStyles = {
     control: (base) => ({
         ...base,
-        backgroundColor: 'lightyellow',
-        borderColor: 'orange',
-        '&:hover': { borderColor: 'gold' },
+        backgroundColor: 'white',
+        borderColor: 'black',
+        '&:hover': { borderColor: 'lightblue' },
     }),
     option: (base, state) => ({
         ...base,
