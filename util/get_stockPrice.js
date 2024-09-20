@@ -4,7 +4,7 @@ import connectDB from './connectDB.js';
 const PERIOD = {'D':'daily','W':'weekly','M':'monthly'};
 
 /**
- * 
+ * 주식 가격 관련 정보
  * @param {string} code 
  * @param {string} period 
  * @returns {StockHistoryData[]}

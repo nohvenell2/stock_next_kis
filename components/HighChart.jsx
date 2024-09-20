@@ -1,23 +1,9 @@
 'use client'
 import dynamic from 'next/dynamic';
 import Highcharts from 'highcharts/highstock';
-import { useEffect,useState } from 'react';
 const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
 
-const HighChart = ({stockCode,period}) => {
-  //data fetching
-  const [data,setData] = useState([]);
-  useEffect(()=>{
-    const main = async()=>{
-      if (!stockCode) return
-      const fetchData = await fetch(`/api/stock-price?code=${stockCode}&period=${period}`)
-      const jsonData = await fetchData.json()
-      setData(jsonData[1])
-    }
-    main()
-  }
-  ,[stockCode,period])
-
+const HighChart = ({data}) => {
   const options = {
     chart:{
       height:'60%'
@@ -45,7 +31,7 @@ const HighChart = ({stockCode,period}) => {
     series: [{
       type: 'candlestick',
       name: 'Stock Price',
-      data: data,
+      data: data[1],
       tooltip: {
         valueDecimals: 0
       }
