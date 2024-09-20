@@ -6,11 +6,11 @@ const HighchartsReact = dynamic(() => import('highcharts-react-official').then(m
 
 const HighChart = () => {
   const [data,setData] = useState([]);
-  //data fetching
   const [loading,setLoading] = useState(true)
+  //data fetching
   useEffect(()=>{
     const main = async()=>{
-      const fetchData = await fetch('/api/stock-price?code=035720')
+      const fetchData = await fetch('/api/stock-price?code=259960')
       const rawData = await fetchData.json()
       setData(rawData[1])
       setLoading(false)
@@ -18,6 +18,7 @@ const HighChart = () => {
     main()
   }
   ,[])
+  
   /*
   const formatting = (d)=>{
     if (d) return d.map(i=>[new Date(i[0]).getTime(),i[1],i[2],i[3],i[4]])
