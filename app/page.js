@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import HighChart from "@/components/HighChart";
 import TopBar from "@/components/TopBar";
+import StockInfo from "@/components/StockInfo";
 
 const Home = () => {
   //STATE - Selected Stock
@@ -27,8 +28,13 @@ const Home = () => {
   return (
     <div>
       <TopBar onChangeStock={handleStock} onChangePeriod={handlePeriod}/>
-      <div className='w-9/12' style={{marginTop:'70px'}}>
-        <HighChart data={data}/>
+      <div className='flex w-full gap-5 mt-24'>
+        <div className="flex-grow min-w-0">
+          <HighChart data={data}/>
+        </div>
+        <div className="flex-shrink-0 pr-3 basis-1/4 min-w-[300px] max-w-[350px]">
+          <StockInfo data={data[0]}/>
+        </div>
       </div>
     </div>
   );

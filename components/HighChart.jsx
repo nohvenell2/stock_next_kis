@@ -6,7 +6,7 @@ const HighchartsReact = dynamic(() => import('highcharts-react-official').then(m
 const HighChart = ({data}) => {
   const options = {
     chart:{
-      height:'60%'
+      height:'55%'
     },
     accessibility:{
       enabled: false
