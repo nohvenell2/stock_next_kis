@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(()=>{
     const getData = async()=>{
       if (!stock) return
-      const fetchData = await fetch(`/api/stock-price?code=${stock}&period=${period}`)
+      const fetchData = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/stock-price?code=${stock}&period=${period}`)
       const jsonData = await fetchData.json()
       setData(jsonData)
     }
