@@ -13,7 +13,7 @@ const lang_Options = {
       numericSymbolMagnitude: 10000, // 만 단위
       numericSymbols: ['만', '억', '조', '경', '해', '자'], // 한국어로 숫자 단위 설정
       rangeSelectorZoom: "범위",
-      thousandsSep: '\U002C',
+      thousandsSep: ',',
   }
 }
 const HighChart = ({data}) => {
@@ -128,11 +128,11 @@ const HighChart = ({data}) => {
         tooltip: {
           valueDecimals: 0,
           pointFormat: `
-            <b style="font-size: 14px;"> OHLC</b><br/>
-            <span style="font-size: 14px;">시가: {point.open} 원</span><br/>
-            <span style="font-size: 14px;">고가: {point.high} 원</span><br/>
-            <span style="font-size: 14px;">저가: {point.low} 원</span><br/>
-            <span style="font-size: 14px;">종가: {point.close} 원</span>
+            <b style="fontSize: 14px;"> OHLC</b><br/>
+            <span style="fontSize: 14px;">시가: {point.open} 원</span><br/>
+            <span style="fontSize: 14px;">고가: {point.high} 원</span><br/>
+            <span style="fontSize: 14px;">저가: {point.low} 원</span><br/>
+            <span style="fontSize: 14px;">종가: {point.close} 원</span>
           `,
         },
         yAxis:0
