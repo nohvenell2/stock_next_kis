@@ -14,5 +14,6 @@ export default async function get_data(code, period = 'D') {
         price_data.push([time, d.open_price, d.high_price, d.low_price, d.close_price])
         volume_data.push([time, d.accumulated_volume])
     })
+    //console.log(price_data.slice(price_data.length-5,price_data.length))
     return [info,price_data,volume_data]
 }

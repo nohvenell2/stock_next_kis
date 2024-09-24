@@ -1,8 +1,8 @@
 'use client'
-import dynamic from 'next/dynamic';
-import Highcharts, { chart } from 'highcharts/highstock';
+import Highcharts from 'highcharts/highstock';
 import { useEffect, useRef } from 'react';
-const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
+import HighchartsReact from 'highcharts-react-official';
+//const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
 //차트 한글화 옵션
 const lang_Options = {
   lang: {
@@ -17,14 +17,25 @@ const lang_Options = {
   }
 }
 const HighChart = ({data}) => {
-  const chartRef = useRef(null)
+  const chartRef=useRef(null)
   //차트 한글화 적용
   useEffect(() => {
     if (typeof Highcharts !== 'undefined') {
       Highcharts.setOptions(lang_Options);
     }
-    chart.update()
-  }, []);
+  },[])
+  useEffect(()=>{
+    if (data.length>0){
+      console.log(chartRef.current)
+      chartRef.current.chart.update({series:[
+        {data:data[1]},{data:data[2]}
+      ],xAxis: {
+        min: null,  // X축 최소값을 초기화
+        max: null,  // X축 최대값을 초기화
+      }
+      },true)
+    }
+  }, [data,chartRef]);
   const options = {
     /*
     title: {
@@ -136,7 +147,7 @@ const HighChart = ({data}) => {
       {
         type: 'candlestick',
         name: 'Stock Price',
-        data: data[1],
+        //data: data[1],
         tooltip: {
           valueDecimals: 0,
           pointFormat: `
@@ -152,7 +163,7 @@ const HighChart = ({data}) => {
       {
         type: 'column',
         name: '거래량',
-        data: data[2],
+        //data: data[2],
         yAxis:1
       }
     ],
@@ -179,26 +190,6 @@ const HighChart = ({data}) => {
       style:{
         fontSize:'16px'
       }
-      /*
-      shared: true,  // 여러 시리즈의 데이터를 함께 보여줌
-      formatter: function () {
-        let s = `<b>${Highcharts.dateFormat('%Y-%m-%d', this.x)}</b><br/>`;
-        
-        this.points.forEach(function (point) {
-          if (point.series.type === 'candlestick') {
-            s += `
-              시가: ${point.point.open} 원<br/>
-              고가: ${point.point.high} 원<br/>
-              저가: ${point.point.low} 원<br/>
-              종가: ${point.point.close} 원<br/>
-            `;
-          } else if (point.series.type === 'column') {
-            s += `<b>거래량</b>: ${point.y} 주<br/>`;
-          }
-        });
-    
-        return s;
-      }*/
     }
   };
   return (
@@ -208,6 +199,7 @@ const HighChart = ({data}) => {
       highcharts={Highcharts}
       constructorType={'stockChart'} // Highstock 사용
       options={options}
+      ref={chartRef}
     />
   </div>
   )
