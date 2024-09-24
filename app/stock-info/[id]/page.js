@@ -1,28 +1,10 @@
 // pages/index.js
-'use client'
-import { useState, useEffect } from "react";
+//todo params: id 를 client 에서 사용할수 있나 고민 => 사용할수 없다
 import HighChart from "@/components/HighChart";
 import StockInfo from "@/components/StockInfo";
-
-const Home = () => {
-    //STATE - Selected Stock
-    const [stock, setStock] = useState('');
-    const handleStock = (s) => setStock(s)
-    //STATE - Selected Period
-    const [period, setPeriod] = useState('D');
-    const handlePeriod = (p) => setPeriod(p)
-    //STATE - Fetch dbData
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        const getData = async () => {
-            if (!stock) return
-            const fetchData = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/stock-price?code=${stock}&period=${period}`)
-            const jsonData = await fetchData.json()
-            setData(jsonData)
-        }
-        getData()
-    }
-        , [stock, period])
+import get_data from "@/util/get_data";
+const StockPage = async ({params:{id},searchParams:{period}}) => {
+    const data = await get_data(id,period)
     //RENDER
     return (
         <div>
@@ -37,5 +19,4 @@ const Home = () => {
         </div>
     );
 };
-
-export default Home;
+export default StockPage;

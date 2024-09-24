@@ -1,15 +1,25 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import StockSelector from './StockSelector';
 import './TopBar.css';
+import { useRouter } from 'next/navigation';
 const period_label = {'일':'D','주':'W','월':'M'}
-const TopBar = ({onChangeStock,onChangePeriod}) => {
-	//todo period state 를 StockSelector 에 전달
+const TopBar = () => {
+	const router = useRouter()
+	const [stock,setStock] = useState('')
+	//todo 버튼컴포넌트 나누기
 	const [selectedButton, setSelectedButton] = useState('일');
 	const handleButtonClick = (buttonName) => {
 		setSelectedButton(buttonName);
-		onChangePeriod(period_label[buttonName]);
 	};
+	useEffect(()=>{
+		//todo period, selected stock 상태를 사용해서 router push
+		const period = period_label[selectedButton]
+		if (stock){
+            const stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock-info/${stock}?period=${period}`
+            router.push(stock_url)
+        }
+	},[stock,selectedButton])
 	
 	return (
 		<div className="top-bar">
@@ -19,7 +29,7 @@ const TopBar = ({onChangeStock,onChangePeriod}) => {
 
 			<div className="search">
 				<div className="stock-selector-wrapper">
-                    <StockSelector onSelect={onChangeStock}/> 
+                    <StockSelector onSelect={setStock}/> 
                 </div>
 			</div>
 

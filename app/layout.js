@@ -9,7 +9,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <TopBar onChangeStock={handleStock} onChangePeriod={handlePeriod}/>
+        <TopBar/>
         {children}
       </body>
     </html>

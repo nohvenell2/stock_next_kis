@@ -8,12 +8,14 @@ const selectOptions = stock_Codes.map(c=>({
     label: `${stock_CodeName[c]} [${c}]`
 }))
 const StockSelector = ({ onSelect }) => {
+    //클라이언트 컴포넌트 로딩처리
     const [isMounted,setMounted] = useState(false)
     useEffect(()=>setMounted(true),[])
+    //Selector 에서 하나 골랐을 때 실행하는 함수
     const handleChange = (e) => {
-        //todo e?.value 에서 받은 code 에 해당하는 url 로 이동. 
+        onSelect(e?.value)
     };
-
+    //Render
     return (
         isMounted ?
         <Select
