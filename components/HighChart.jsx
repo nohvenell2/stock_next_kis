@@ -2,7 +2,6 @@
 import Highcharts from 'highcharts/highstock';
 import { useEffect } from 'react';
 import HighchartsReact from 'highcharts-react-official';
-//const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
 //차트 한글화 옵션
 const lang_Options = {
   lang: {
@@ -186,7 +185,6 @@ const HighChart = ({data}) => {
       highcharts={Highcharts}
       constructorType={'stockChart'} // Highstock 사용
       options={options}
-      /* ref={chartRef} */
     />
   </div>
   )
