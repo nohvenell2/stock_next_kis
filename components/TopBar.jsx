@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react';
 import StockSelector from './StockSelector';
 import './TopBar.css';

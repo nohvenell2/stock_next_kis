@@ -11,7 +11,7 @@ const StockSelector = ({ onSelect }) => {
     const [isMounted,setMounted] = useState(false)
     useEffect(()=>setMounted(true),[])
     const handleChange = (e) => {
-        onSelect(e?.value); // 선택된 주식을 상위 컴포넌트로 전달
+        //todo params.id 에서 받은 code 에 해당하는 url 로 이동
     };
 
     return (

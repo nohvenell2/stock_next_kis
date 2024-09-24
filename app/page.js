@@ -27,7 +27,6 @@ const Home = () => {
   //RENDER
   return (
     <div>
-      <TopBar onChangeStock={handleStock} onChangePeriod={handlePeriod}/>
       <div className='flex w-full gap-5 mt-24'>
         <div className="flex-grow min-w-0">
           <HighChart data={data}/>
