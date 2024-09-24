@@ -103,7 +103,7 @@ const HighChart = ({data}) => {
         text: 'OHLC'
       },
       */
-      height: '70%',
+      height: '75%',
       lineWidth: 2,
       resize: {
         enabled: true
@@ -121,8 +121,8 @@ const HighChart = ({data}) => {
         text: 'Volume'
       },
       */
-      top: '72%',
-      height: '28%',
+      top: '77%',
+      height: '23%',
       lineWidth: 2,
       offset: 20,
       labels:{

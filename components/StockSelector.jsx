@@ -8,9 +8,6 @@ const selectOptions = stock_Codes.map(c=>({
     label: `${stock_CodeName[c]} [${c}]`
 }))
 const StockSelector = ({ onSelect,currentStock }) => {
-    //클라이언트 컴포넌트 로딩처리
-    const [isMounted,setMounted] = useState(false)
-    useEffect(()=>setMounted(true),[])
     //Selector 에서 하나 골랐을 때 실행하는 함수
     const handleChange = (e) => {
         onSelect(e?.value)
@@ -18,7 +15,6 @@ const StockSelector = ({ onSelect,currentStock }) => {
     const defaultSelected = currentStock? {value:currentStock, label:`${stock_CodeName[currentStock]} [${currentStock}]`}:null
     //Render
     return (
-        isMounted ?
         <Select
             options={selectOptions}
             onChange={handleChange}
@@ -26,8 +22,7 @@ const StockSelector = ({ onSelect,currentStock }) => {
             styles={customStyles}
             isClearable
             defaultValue = {defaultSelected}
-        /> :
-        <div>Loading...</div>
+        />
     );
 };
 //바 스타일

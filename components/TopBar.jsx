@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import StockSelector from './StockSelector';
 import './TopBar.css';
 import { useRouter } from 'next/navigation';
@@ -35,7 +35,9 @@ const TopBar = () => {
 
 			<div className="search">
 				<div className="stock-selector-wrapper">
-                    <StockSelector onSelect={setStock} currentStock={stock}/> 
+					<Suspense fallback={<>Loading...</>}>
+                    	<StockSelector onSelect={setStock} currentStock={stock}/> 
+					</Suspense>
                 </div>
 			</div>
 
