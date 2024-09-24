@@ -6,7 +6,7 @@ import TopBar from "@/components/TopBar";
 import StockInfo from "@/components/StockInfo";
 
 const Home = () => {
-  //todo krs100 지표 차트 메인 화면으로 추가 예정
+  //todo KOSPI 지표 차트 메인 화면으로 추가 예정
   return <div>Here is Home.</div>
   /* 
   //STATE - Selected Stock
