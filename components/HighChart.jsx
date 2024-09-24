@@ -1,7 +1,7 @@
 'use client'
 import dynamic from 'next/dynamic';
-import Highcharts from 'highcharts/highstock';
-import { useEffect } from 'react';
+import Highcharts, { chart } from 'highcharts/highstock';
+import { useEffect, useRef } from 'react';
 const HighchartsReact = dynamic(() => import('highcharts-react-official').then(mod => mod.default), { ssr: false });
 //차트 한글화 옵션
 const lang_Options = {
@@ -17,11 +17,13 @@ const lang_Options = {
   }
 }
 const HighChart = ({data}) => {
+  const chartRef = useRef(null)
   //차트 한글화 적용
   useEffect(() => {
     if (typeof Highcharts !== 'undefined') {
       Highcharts.setOptions(lang_Options);
     }
+    chart.update()
   }, []);
   const options = {
     /*
@@ -68,6 +70,21 @@ const HighChart = ({data}) => {
         text: '전체',
       }
     ]},
+    navigator:{
+      //enabled:false,
+      adaptToUpdatedData: false,
+      handles:{
+        enabled:false
+      },
+      xAxis:{
+        dateTimeLabelFormats:{
+          day: '%b. %e일',
+          week: '%b. %e일',
+          month: '%y년 \'%b',
+          year: '%Y년'
+        }
+      },
+    },
     xAxis: {
       type: 'datetime',
       //x축 날짜 한글화
@@ -145,7 +162,7 @@ const HighChart = ({data}) => {
         lineColor: 'blue',
         upColor: 'tomato',
         upLineColor: 'red'
-      }
+      },
     },
     //툴팁 한글화
     tooltip:{
