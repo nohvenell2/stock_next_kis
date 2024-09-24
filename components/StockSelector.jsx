@@ -25,7 +25,7 @@ const StockSelector = ({ onSelect }) => {
             styles={customStyles}
             isClearable
         /> :
-        <></>
+        <div>Loading...</div>
     );
 };
 //바 스타일

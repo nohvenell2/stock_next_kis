@@ -13,7 +13,6 @@ const TopBar = () => {
 		setSelectedButton(buttonName);
 	};
 	useEffect(()=>{
-		//todo period, selected stock 상태를 사용해서 router push
 		const period = period_label[selectedButton]
 		if (stock){
             const stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock-info/${stock}?period=${period}`
