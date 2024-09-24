@@ -4,12 +4,13 @@ import StockSelector from './StockSelector';
 import './TopBar.css';
 const period_label = {'일':'D','주':'W','월':'M'}
 const TopBar = ({onChangeStock,onChangePeriod}) => {
+	//todo period state 를 StockSelector 에 전달
 	const [selectedButton, setSelectedButton] = useState('일');
 	const handleButtonClick = (buttonName) => {
 		setSelectedButton(buttonName);
 		onChangePeriod(period_label[buttonName]);
 	};
-
+	
 	return (
 		<div className="top-bar">
 			<div className="title">
