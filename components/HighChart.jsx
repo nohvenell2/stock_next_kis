@@ -48,30 +48,24 @@ const HighChart = ({data}) => {
         type: 'month',
         count: 1,
         text: '1달',
-        title: '범위 : 1달'
       }, {
         type: 'month',
         count: 3,
         text: '3달',
-        title: '범위 : 3달'
       }, {
         type: 'month',
         count: 6,
         text: '반년',
-        title: '범위 : 반년'
       }, {
         type: 'ytd',
         text: '올해',
-        title: '범위 : 올해'
       }, {
         type: 'year',
         count: 1,
         text: '1년',
-        title: '범위 : 1년'
       }, {
         type: 'all',
         text: '전체',
-        title: '범위 : 전체'
       }
     ]},
     xAxis: {
@@ -160,7 +154,7 @@ const HighChart = ({data}) => {
         second: '%H시 %M분 %S초',
         minute: '%H시 %M분',
         hour: '%H시 %M분',
-        day: '%Y %b %e일 %A',
+        day: '%Y년 %b %e일 %A',
         week: '%b %e일',
         month: '%Y년 %b',
         year: '%Y년'

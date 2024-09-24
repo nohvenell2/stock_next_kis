@@ -15,6 +15,7 @@ const StockSelector = ({ onSelect,currentStock }) => {
     const handleChange = (e) => {
         onSelect(e?.value)
     };
+    const defaultSelected = currentStock? {value:currentStock, label:`${stock_CodeName[currentStock]} [${currentStock}]`}:null
     //Render
     return (
         isMounted ?
@@ -24,7 +25,7 @@ const StockSelector = ({ onSelect,currentStock }) => {
             placeholder="Choose a stock"
             styles={customStyles}
             isClearable
-            defaultValue = {{value:currentStock,label:`${stock_CodeName[currentStock]} [${currentStock}]`}}
+            defaultValue = {defaultSelected}
         /> :
         <div>Loading...</div>
     );
