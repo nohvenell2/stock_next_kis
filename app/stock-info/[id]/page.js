@@ -1,5 +1,4 @@
 // pages/index.js
-//todo params: id 를 client 에서 사용할수 있나 고민 => 사용할수 없다
 import HighChart from "@/components/HighChart";
 import StockInfo from "@/components/StockInfo";
 import get_data from "@/util/get_data";

@@ -7,7 +7,7 @@ const selectOptions = stock_Codes.map(c=>({
     value: c,
     label: `${stock_CodeName[c]} [${c}]`
 }))
-const StockSelector = ({ onSelect }) => {
+const StockSelector = ({ onSelect,currentStock }) => {
     //클라이언트 컴포넌트 로딩처리
     const [isMounted,setMounted] = useState(false)
     useEffect(()=>setMounted(true),[])
@@ -24,6 +24,7 @@ const StockSelector = ({ onSelect }) => {
             placeholder="Choose a stock"
             styles={customStyles}
             isClearable
+            defaultValue = {{value:currentStock,label:`${stock_CodeName[currentStock]} [${currentStock}]`}}
         /> :
         <div>Loading...</div>
     );

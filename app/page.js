@@ -7,7 +7,7 @@ import StockInfo from "@/components/StockInfo";
 
 const Home = () => {
   //todo KOSPI 지표 차트 메인 화면으로 추가 예정
-  return <div>Here is Home.</div>
+  return <div className="mt-24">Here is Home.</div>
   /* 
   //STATE - Selected Stock
   const [stock,setStock] = useState('');

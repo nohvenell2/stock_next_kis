@@ -40,6 +40,7 @@ const HighChart = ({data}) => {
     },
     rangeSelector: {
       selected: 1,
+      //inputEnabled:false,
       //범위 설정 옵션 한글화
       inputDateFormat: '%Y %b %e일',
       //버튼 한글화
