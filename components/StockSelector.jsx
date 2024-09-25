@@ -9,11 +9,14 @@ const selectOptions = stock_Codes.map(c=>({
 }))
 const StockSelector = ({ onSelect,currentStock }) => {
     //Selector 에서 하나 골랐을 때 실행하는 함수
+    const [Loaded,setLoaded] = useState(false)
+    useEffect(()=>setLoaded(true),[])
     const handleChange = (e) => {
         onSelect(e?.value)
     };
     const defaultSelected = currentStock? {value:currentStock, label:`${stock_CodeName[currentStock]} [${currentStock}]`}:null
     //Render
+    if (!Loaded) return <></>
     return (
         <Select
             options={selectOptions}
