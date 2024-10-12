@@ -10,6 +10,7 @@ export default async function get_data(code, period = 'D') {
     const price_data = []
     const volume_data = []
     data.forEach((d) => {
+        //UTC 시간 맞추기
         const time = new Date(d.trading_date).getTime() + 9 * 60 * 60 * 1000
         price_data.push([time, d.open_price, d.high_price, d.low_price, d.close_price])
         volume_data.push([time, d.accumulated_volume])
