@@ -4,6 +4,7 @@ import StockSelector from './StockSelector';
 import './TopBar.css';
 import { useRouter } from 'next/navigation';
 import PeriodButton from './PeriodButton';
+import Link from 'next/link';
 const urlToCode = (u) => u.match(/\/(\d{6})(?=\?)/)?.[1]
 const TopBar = () => {
 	//STATE - Stock
@@ -28,7 +29,9 @@ const TopBar = () => {
 		<div className="top-bar">
 			{/* TITLE */}
 			<div className="title">
-				KRX100 주식정보
+				<Link href='/'>
+					KOSPI 주식정보
+				</Link>
 			</div>
 			{/* SELECTOR */}
 			<div className="search">
