@@ -100,11 +100,11 @@ const KospiChart = ({ data }) => {
 
         },
         series:             
-            {
+            [{
                 type: 'line',
                 name: 'KOSPI 지수',
                 data: data,
-            },
+            }],
         //툴팁 한글화
         tooltip: {
             dateTimeLabelFormats: {

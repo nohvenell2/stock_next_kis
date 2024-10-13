@@ -29,7 +29,7 @@ const TopBar = () => {
 		<div className="top-bar">
 			{/* TITLE */}
 			<div className="title">
-				<Link href='/home'>
+				<Link href='/'>
 					KOSPI 주식정보
 				</Link>
 			</div>
