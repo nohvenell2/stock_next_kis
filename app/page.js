@@ -14,7 +14,7 @@ const Home = async () => {
     const decreaseRateRank = await rank_RateDown()
     return (
         <div className="flex w-full gap-5 mt-24">
-            <div className="flex-grow min-w-0 max-w-7xl justify-self-center">
+            <div className="flex-grow min-w-0 max-w-7xl">
                 <KospiChart data={data} />
                 {/* 4개의 순위를 그리드로 배치 */}
                 <div className="grid grid-cols-2 gap-6 mt-8">
