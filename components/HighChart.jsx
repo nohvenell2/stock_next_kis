@@ -19,7 +19,8 @@ const HighChart = ({ data }) => {
         },
         */
         chart: {
-            height: '55%'
+            height: '55%',
+            /* reflow: false */
         },
         accessibility: {
             enabled: false
@@ -108,7 +109,7 @@ const HighChart = ({ data }) => {
         }, {
             /*
             title: {
-              text: 'Volume'
+                text: 'Volume'
             },
             */
             top: '77%',
@@ -128,12 +129,12 @@ const HighChart = ({ data }) => {
                 tooltip: {
                     valueDecimals: 0,
                     pointFormat: `
-            <b style="fontSize: 14px;"> OHLC</b><br/>
-            <span style="fontSize: 14px;">시가: {point.open} 원</span><br/>
-            <span style="fontSize: 14px;">고가: {point.high} 원</span><br/>
-            <span style="fontSize: 14px;">저가: {point.low} 원</span><br/>
-            <span style="fontSize: 14px;">종가: {point.close} 원</span>
-          `,
+                        <b style="fontSize: 14px;"> OHLC</b><br/>
+                        <span style="fontSize: 14px;">시가: {point.open} 원</span><br/>
+                        <span style="fontSize: 14px;">고가: {point.high} 원</span><br/>
+                        <span style="fontSize: 14px;">저가: {point.low} 원</span><br/>
+                        <span style="fontSize: 14px;">종가: {point.close} 원</span>
+                    `,
                 },
                 yAxis: 0
             },
@@ -171,13 +172,11 @@ const HighChart = ({ data }) => {
     };
     return (
         data.length === 0 ? <div>No Data</div> :
-            <div>
-                <HighchartsReact
+            <HighchartsReact
                     highcharts={Highcharts}
                     constructorType={'stockChart'} // Highstock 사용
                     options={options}
-                />
-            </div>
+            />
     )
 }
 export default HighChart;

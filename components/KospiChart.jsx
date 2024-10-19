@@ -14,7 +14,7 @@ const KospiChart = ({ data }) => {
     }, [])
     const options = {
         chart: {
-            height: '55%'
+            height: '55%',
         },
         accessibility: {
             enabled: false
