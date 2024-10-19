@@ -1,8 +1,9 @@
 import connectDB from "./connectDB.js";
+import { formatNumber } from "./format_number.js";
 //하루 거래량 순위 탑10
-const rank_VolumeQ = async() => {
+const rank_VolumeQ = async () => {
     const conn = await connectDB()
-    const query =`
+    const query = `
     WITH LatestTradingDate AS (
         SELECT MAX(trading_date) AS latest_date
         FROM stock_price_daily
@@ -15,12 +16,13 @@ const rank_VolumeQ = async() => {
     const [result] = await conn.execute(query);
     conn.end()
     //accumulated_volume
-    return result
+    const data = result.map((s)=>[s.stock_code,`${formatNumber(s.accumulated_volume)} 주`])
+    return data
 }
 //하루 거래액 순위 탑10
-const rank_VolumeP = async() => {
+const rank_VolumeP = async () => {
     const conn = await connectDB()
-    const query =`
+    const query = `
     WITH LatestTradingDate AS (
         SELECT MAX(trading_date) AS latest_date
         FROM stock_price_daily
@@ -33,12 +35,13 @@ const rank_VolumeP = async() => {
     const [result] = await conn.execute(query);
     conn.end()
     //accumulated_tr_pbmn
-    return result
+    const data = result.map((s)=>[s.stock_code,`${formatNumber(s.accumulated_tr_pbmn)} 원`])
+    return data
 }
 //하루 상승률 순위 탑10
-const rank_RateUp = async() => {
+const rank_RateUp = async () => {
     const conn = await connectDB()
-    const query =`
+    const query = `
     SELECT stock_code, price_change_rate
     FROM stock_info
     ORDER BY price_change_rate DESC
@@ -46,12 +49,13 @@ const rank_RateUp = async() => {
     const [result] = await conn.execute(query);
     conn.end()
     //price_change_rate
-    return result
+    const data = result.map((s)=>[s.stock_code,`${s.price_change_rate}%`])
+    return data
 }
 //하루 하락률률 순위 탑10
-const rank_RateDown = async() => {
+const rank_RateDown = async () => {
     const conn = await connectDB()
-    const query =`
+    const query = `
     SELECT stock_code, price_change_rate
     FROM stock_info
     ORDER BY price_change_rate ASC
@@ -59,6 +63,7 @@ const rank_RateDown = async() => {
     const [result] = await conn.execute(query);
     conn.end()
     //price_change_rate
-    return result
+    const data = result.map((s)=>[s.stock_code,`${s.price_change_rate}%`])
+    return data
 }
-export {rank_VolumeQ,rank_VolumeP,rank_RateUp,rank_RateDown}
+export { rank_VolumeQ, rank_VolumeP, rank_RateUp, rank_RateDown }
