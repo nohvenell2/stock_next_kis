@@ -1,5 +1,5 @@
 import React from "react";
-//import styles from "./StockInfo.module.css"
+import styles from "./StockInfo.module.css"
 /**
  * 시가 총액을 'xx조 xx억 원' 형식으로 변환하는 함수
  * @param {number} marketCap - 시가 총액 (억 단위)

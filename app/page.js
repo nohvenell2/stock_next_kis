@@ -1,8 +1,8 @@
 import get_kospiIndex from "@/util/get_kospi";
 import KospiChart from "@/components/KospiChart";
 import { rank_VolumeP,rank_VolumeQ, rank_RateUp, rank_RateDown } from "@/util/get_rank";
-import { stock_code_name } from "../constants/stock_code_name.js";
-import Link from "next/link.js";
+import { stock_code_name } from "../constants/stock_code_name";
+import Link from "next/link";
 export const metadata = {
     title: 'Home | KOSPI'
 }
