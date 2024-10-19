@@ -4,7 +4,7 @@ import { rank_VolumeP,rank_VolumeQ, rank_RateUp, rank_RateDown } from "@/util/ge
 import stock_CodeName from "../constants/stock_code_name.js";
 import Link from "next/link.js";
 export const metadata = {
-    title: 'Home'
+    title: 'Home | KOSPI'
 }
 const Home = async () => {
     //todo 주식 거래량 순위 10, 주식 등략률 10, 공매도 상위 10

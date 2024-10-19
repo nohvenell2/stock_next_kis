@@ -2,8 +2,8 @@ import TopBar from "@/components/TopBar";
 import "./globals.css";
 
 export const metadata = {
-  title:{default : 'KRX100',
-  template : '%s | KRX100'},
+  title:{default : 'KOSPI',
+  template : '%s | KOSPI'},
   description: "stock app",
 };
 export default function RootLayout({ children }) {

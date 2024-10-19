@@ -9,6 +9,7 @@ const urlToCode = (u) => u.match(/\/(\d{6})(?=\?)/)?.[1]
 const TopBar = () => {
 	//STATE - Stock
 	const [stock,setStock] = useState('')
+	//url 에서 주식 코드를 가져오고 defalt 로 설정
 	useEffect(()=>{
 		if (typeof window !== 'undefined') {
 			setStock(urlToCode(window.location.href));
@@ -16,7 +17,7 @@ const TopBar = () => {
 	},[])
 	//STATE - Period
 	const [period,setPeriod] = useState('D')
-	//APPLY STATE
+	//APPLY STATE - stock 또는 period 가 변경되면 해당 url 로 이동
 	const router = useRouter()
 	useEffect(()=>{
 		if (stock){
