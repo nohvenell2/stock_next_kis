@@ -3,6 +3,7 @@ import HighChart from "@/components/HighChart";
 import StockInfo from "@/components/StockInfo";
 import stock_CodeName from "@/constants/stock_code_name";
 import get_data from "@/util/get_data";
+import styles from './styles.module.css'
 export function generateMetadata({params:{id}}){
     return ({
         title: stock_CodeName[id]

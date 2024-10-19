@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import stock_CodeName from '@/constants/stock_code_name';
-import { usePathname } from 'next/navigation';
 const stock_Codes = Object.keys(stock_CodeName);
 const selectOptions = stock_Codes.map(c=>({
     value: c,
@@ -15,13 +14,7 @@ const StockSelector = ({ onSelect,currentStock }) => {
     const handleChange = (e) => {
         onSelect(e?.value)
     };
-    //주소로 부터 stock code 추출 및 반영
-    const [stock,setStock] = useState(currentStock)
-    const pathname = usePathname();
-    useEffect(()=>{
-        setStock(pathname.substring(12))
-    },[pathname])
-    //Render
+       //Render
     if (!Loaded) return <></>
     return (
         <Select
@@ -30,7 +23,7 @@ const StockSelector = ({ onSelect,currentStock }) => {
             placeholder="Choose a stock"
             styles={customStyles}
             isClearable
-            value = {stock? {value:stock, label:`${stock_CodeName[stock]} [${stock}]`}:null}
+            value = {currentStock? {value:currentStock, label:`${stock_CodeName[currentStock]} [${currentStock}]`}:null}
         />
     );
 };

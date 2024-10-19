@@ -90,7 +90,7 @@ const HighChart = ({ data }) => {
         yAxis: [{
             /*
             title: {
-              text: 'OHLC'
+            s    text: 'OHLC'
             },
             */
             height: '75%',
@@ -170,7 +170,7 @@ const HighChart = ({ data }) => {
         }
     };
     return (
-        data.length === 0 ? <div>Select Stock</div> :
+        data.length === 0 ? <div>No Data</div> :
             <div>
                 <HighchartsReact
                     highcharts={Highcharts}
