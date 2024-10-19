@@ -5,7 +5,6 @@ import './TopBar.css';
 import { useRouter,usePathname } from 'next/navigation';
 import PeriodButton from './PeriodButton';
 import Link from 'next/link';
-//const urlToCode = (u) => u.match(/\/(\d{6})(?=\?)/)?.[1]
 const TopBar = () => {
 	//STATE - Stock
 	const [stock,setStock] = useState('')
@@ -36,7 +35,7 @@ const TopBar = () => {
 			{/* SELECTOR */}
 			<div className="search">
 				<div className="stock-selector-wrapper">
-					<Suspense fallback={<>Loading...</>}>
+					<Suspense fallback={<div>Loading...</div>}>
                     	<StockSelector onSelect={setStock} currentStock={stock}/> 
 					</Suspense>
                 </div>

@@ -1,13 +1,12 @@
 import get_kospiIndex from "@/util/get_kospi";
 import KospiChart from "@/components/KospiChart";
 import { rank_VolumeP,rank_VolumeQ, rank_RateUp, rank_RateDown } from "@/util/get_rank";
-import stock_CodeName from "../constants/stock_code_name.js";
+import { stock_code_name } from "../constants/stock_code_name.js";
 import Link from "next/link.js";
 export const metadata = {
     title: 'Home | KOSPI'
 }
 const Home = async () => {
-    //todo 주식 거래량 순위 10, 주식 등략률 10, 공매도 상위 10
     const data = await get_kospiIndex()
     const volumeRank = await rank_VolumeQ()
     const priceRank = await rank_VolumeP()
@@ -26,7 +25,7 @@ const Home = async () => {
                             {volumeRank.map((stock, index) => (
                                 <li key={index} className="text-lg">
                                     <Link href={`/stock-info/${stock.stock_code}?period=D`}>
-                                        {index + 1}. {stock_CodeName[stock.stock_code]} - {stock.accumulated_volume}
+                                        {index + 1}. {stock_code_name[stock.stock_code]} - {stock.accumulated_volume}
                                     </Link>
                                 </li>
                             ))}
@@ -39,7 +38,7 @@ const Home = async () => {
                             {priceRank.map((stock, index) => (
                                 <li key={index} className="text-lg">
                                     <Link href={`/stock-info/${stock.stock_code}?period=D`}>
-                                        {index + 1}. {stock_CodeName[stock.stock_code]} - {stock.accumulated_tr_pbmn}원
+                                        {index + 1}. {stock_code_name[stock.stock_code]} - {stock.accumulated_tr_pbmn}원
                                     </Link>
                                 </li>
                             ))}
@@ -52,7 +51,7 @@ const Home = async () => {
                             {increaseRateRank.map((stock, index) => (
                                 <li key={index} className="text-lg">
                                     <Link href={`/stock-info/${stock.stock_code}?period=D`}>
-                                        {index + 1}. {stock_CodeName[stock.stock_code]}  {stock.price_change_rate}%
+                                        {index + 1}. {stock_code_name[stock.stock_code]}  {stock.price_change_rate}%
                                     </Link>
                                 </li>
                             ))}
@@ -65,7 +64,7 @@ const Home = async () => {
                             {decreaseRateRank.map((stock, index) => (
                                 <li key={index} className="text-lg">
                                     <Link href={`/stock-info/${stock.stock_code}?period=D`}>
-                                        {index + 1}. {stock_CodeName[stock.stock_code]}  {stock.price_change_rate}%
+                                        {index + 1}. {stock_code_name[stock.stock_code]}  {stock.price_change_rate}%
                                     </Link>
                                 </li>
                             ))}

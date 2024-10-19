@@ -1,5 +1,4 @@
-import connectDB from "../util/connectDB.js";
-import stock_CodeName from "../constants/stock_code_name.js";
+import connectDB from "./connectDB.js";
 //하루 거래량 순위 탑10
 const rank_VolumeQ = async() => {
     const conn = await connectDB()
