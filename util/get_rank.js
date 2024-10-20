@@ -1,5 +1,5 @@
 import connectDB from "./connectDB.js";
-import { formatNumber } from "./format_number.js";
+import { formatNumberShort } from "./format_number.js";
 //하루 거래량 순위 탑10
 const rank_VolumeQ = async () => {
     const conn = await connectDB()
@@ -16,7 +16,7 @@ const rank_VolumeQ = async () => {
     const [result] = await conn.execute(query);
     conn.end()
     //accumulated_volume
-    const data = result.map((s)=>[s.stock_code,`${formatNumber(s.accumulated_volume)} 주`])
+    const data = result.map((s)=>[s.stock_code,`${formatNumberShort(s.accumulated_volume)} 주`])
     return data
 }
 //하루 거래액 순위 탑10
@@ -35,7 +35,7 @@ const rank_VolumeP = async () => {
     const [result] = await conn.execute(query);
     conn.end()
     //accumulated_tr_pbmn
-    const data = result.map((s)=>[s.stock_code,`${formatNumber(s.accumulated_tr_pbmn)} 원`])
+    const data = result.map((s)=>[s.stock_code,`${formatNumberShort(s.accumulated_tr_pbmn)} 원`])
     return data
 }
 //하루 상승률 순위 탑10
