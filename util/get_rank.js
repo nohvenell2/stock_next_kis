@@ -1,7 +1,7 @@
 import connectDB from "./connectDB.js";
 import { formatNumberShort } from "./format_number.js";
-//하루 거래량 순위 탑10
-const rank_VolumeQ = async () => {
+//하루 거래량 순위
+const rank_VolumeQ = async (rank_max=5) => {
     const conn = await connectDB()
     const query = `
     WITH LatestTradingDate AS (
@@ -12,15 +12,15 @@ const rank_VolumeQ = async () => {
     FROM stock_price_daily
     WHERE trading_date = (SELECT latest_date FROM LatestTradingDate)
     ORDER BY accumulated_volume DESC
-    LIMIT 10;`
+    LIMIT ${rank_max};`
     const [result] = await conn.execute(query);
     conn.end()
     //accumulated_volume
     const data = result.map((s)=>[s.stock_code,`${formatNumberShort(s.accumulated_volume)} 주`])
     return data
 }
-//하루 거래액 순위 탑10
-const rank_VolumeP = async () => {
+//하루 거래액 순위
+const rank_VolumeP = async (rank_max=5) => {
     const conn = await connectDB()
     const query = `
     WITH LatestTradingDate AS (
@@ -31,35 +31,36 @@ const rank_VolumeP = async () => {
     FROM stock_price_daily
     WHERE trading_date = (SELECT latest_date FROM LatestTradingDate)
     ORDER BY accumulated_tr_pbmn DESC
-    LIMIT 10;`
+    LIMIT ${rank_max};`
+
     const [result] = await conn.execute(query);
     conn.end()
     //accumulated_tr_pbmn
     const data = result.map((s)=>[s.stock_code,`${formatNumberShort(s.accumulated_tr_pbmn)} 원`])
     return data
 }
-//하루 상승률 순위 탑10
-const rank_RateUp = async () => {
+//하루 상승률 순위
+const rank_RateUp = async (rank_max=5) => {
     const conn = await connectDB()
     const query = `
     SELECT stock_code, price_change_rate
     FROM stock_info
     ORDER BY price_change_rate DESC
-    LIMIT 10;`
+    LIMIT ${rank_max};`
     const [result] = await conn.execute(query);
     conn.end()
     //price_change_rate
     const data = result.map((s)=>[s.stock_code,`${s.price_change_rate}%`])
     return data
 }
-//하루 하락률률 순위 탑10
-const rank_RateDown = async () => {
+//하루 하락률률 순위
+const rank_RateDown = async (rank_max=5) => {
     const conn = await connectDB()
     const query = `
     SELECT stock_code, price_change_rate
     FROM stock_info
     ORDER BY price_change_rate ASC
-    LIMIT 10;`
+    LIMIT ${rank_max};`
     const [result] = await conn.execute(query);
     conn.end()
     //price_change_rate
