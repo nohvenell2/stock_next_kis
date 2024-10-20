@@ -13,7 +13,7 @@ export default function RankCard({ title, data, value_color }){
                             <span className="w-6 h-6 flex items-center justify-center bg-blue-500 text-white rounded-full text-sm font-medium">
                                 {i + 1}
                             </span>
-                            <span className="text-gray-700">{stock_code_name[d[0]].slice(0,9)}</span>
+                            <span className="text-gray-700">{stock_code_name[d[0]].slice(0,8)}</span>
                         </span>
                         <span className={valueColor+"font-medium"}>{d[1]}</span>
                     </Link>
