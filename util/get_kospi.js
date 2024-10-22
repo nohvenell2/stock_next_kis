@@ -9,13 +9,13 @@ const get_kospiIndex = async ()=>{
     const query = 'SELECT * FROM stock_kospi';
     const conn = await connectDB();
     const [data] = await conn.query(query)
-    conn.end()
     const kospi_data = []
     data.forEach((d) => {
         //UTC 시간 맞추기
         const time = new Date(d.trading_date).getTime() + 9 * 60 * 60 * 1000
         kospi_data.push([time, Number(d.value)])
     })
+    conn.end()
     return kospi_data
 }
 

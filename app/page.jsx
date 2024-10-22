@@ -2,6 +2,7 @@ import get_kospiIndex from "@/util/get_kospi";
 import KospiChart from "@/components/KospiChart";
 import { rank_VolumeP, rank_VolumeQ, rank_RateUp, rank_RateDown } from "@/util/get_rank";
 import RankCard from "@/components/RankCard";
+export const revalidate = 60 * 60 * 15;
 export const metadata = {
     title: 'Home | KOSPI'
 }
