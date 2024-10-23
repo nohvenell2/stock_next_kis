@@ -15,7 +15,7 @@ const Home = async () => {
 
     /* const priceRank = await rank_VolumeP() */
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 mt-8">
             <div className="max-w-7xl mx-auto">
                 <KospiChart data={data} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md">
