@@ -1,7 +1,21 @@
 import connectDB from "./connectDB.js";
 import { formatNumberShort } from "./format_number.js";
-//하루 거래량 순위
-const rank_VolumeQ = async (rank_max=5) => {
+const RANK_MAX = 5;
+//시가총액 순위
+const rank_Capital = async (rank_max=RANK_MAX) => {
+    const conn = await connectDB()
+    const query = `
+    SELECT stock_code, market_cap
+    FROM stock_info
+    ORDER BY market_cap DESC
+    LIMIT ${rank_max};`
+    const [result] = await conn.execute(query);
+    conn.end()
+    //accumulated_volume
+    const data = result.map((s)=>[s.stock_code,`${formatNumberShort(s.market_cap*100000000)} 원`])
+    return data
+}
+const rank_VolumeQ = async (rank_max=RANK_MAX) => {
     const conn = await connectDB()
     const query = `
     WITH LatestTradingDate AS (
@@ -20,7 +34,7 @@ const rank_VolumeQ = async (rank_max=5) => {
     return data
 }
 //하루 거래액 순위
-const rank_VolumeP = async (rank_max=5) => {
+const rank_VolumeP = async (rank_max=RANK_MAX) => {
     const conn = await connectDB()
     const query = `
     WITH LatestTradingDate AS (
@@ -40,7 +54,7 @@ const rank_VolumeP = async (rank_max=5) => {
     return data
 }
 //하루 상승률 순위
-const rank_RateUp = async (rank_max=5) => {
+const rank_RateUp = async (rank_max=RANK_MAX) => {
     const conn = await connectDB()
     const query = `
     SELECT stock_code, price_change_rate
@@ -54,7 +68,7 @@ const rank_RateUp = async (rank_max=5) => {
     return data
 }
 //하루 하락률률 순위
-const rank_RateDown = async (rank_max=5) => {
+const rank_RateDown = async (rank_max=RANK_MAX) => {
     const conn = await connectDB()
     const query = `
     SELECT stock_code, price_change_rate
@@ -67,4 +81,4 @@ const rank_RateDown = async (rank_max=5) => {
     const data = result.map((s)=>[s.stock_code,`${s.price_change_rate}%`])
     return data
 }
-export { rank_VolumeQ, rank_VolumeP, rank_RateUp, rank_RateDown }
+export { rank_VolumeQ, rank_VolumeP, rank_RateUp, rank_RateDown, rank_Capital }
