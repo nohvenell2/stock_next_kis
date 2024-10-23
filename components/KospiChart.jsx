@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official';
 import Options_Korean from '@/constants/chart_korean';
 //차트 한글화 옵션
 const lang_Options = Options_Korean
-const HighChart = ({ data }) => {
+const KospiChart = ({ data }) => {
     //차트 한글화 적용
     useEffect(() => {
         if (typeof Highcharts !== 'undefined') {
@@ -13,14 +13,8 @@ const HighChart = ({ data }) => {
         }
     }, [])
     const options = {
-        /*
-        title: {
-            text: 'Stock Price Candlestick Chart'
-        },
-        */
         chart: {
             height: '55%',
-            /* reflow: false */
         },
         accessibility: {
             enabled: false
@@ -53,6 +47,10 @@ const HighChart = ({ data }) => {
                 type: 'year',
                 count: 1,
                 text: '1년',
+            }, {
+                type: 'year',
+                count: 3,
+                text: '3년',
             }, {
                 type: 'all',
                 text: '전체',
@@ -88,13 +86,7 @@ const HighChart = ({ data }) => {
                 year: '%Y년'
             },
         },
-        yAxis: [{
-            /*
-            title: {
-            s    text: 'OHLC'
-            },
-            */
-            height: '75%',
+        yAxis: {
             lineWidth: 2,
             resize: {
                 enabled: true
@@ -103,56 +95,16 @@ const HighChart = ({ data }) => {
             labels: {
                 align: 'left',
                 x: 3,
-                format: '{text}원'
+                format: '{text}'
             }
 
-        }, {
-            /*
-            title: {
-                text: 'Volume'
-            },
-            */
-            top: '77%',
-            height: '23%',
-            lineWidth: 2,
-            offset: 20,
-            labels: {
-                align: 'left',
-                x: 3
-            }
-        }],
-        series: [
-            {
-                type: 'candlestick',
-                name: 'Stock Price',
-                data: data[1],
-                tooltip: {
-                    valueDecimals: 0,
-                    pointFormat: `
-                        <b style="fontSize: 14px;"> OHLC</b><br/>
-                        <span style="fontSize: 14px;">시가: {point.open} 원</span><br/>
-                        <span style="fontSize: 14px;">고가: {point.high} 원</span><br/>
-                        <span style="fontSize: 14px;">저가: {point.low} 원</span><br/>
-                        <span style="fontSize: 14px;">종가: {point.close} 원</span>
-                    `,
-                },
-                yAxis: 0
-            },
-            {
-                type: 'column',
-                name: '거래량',
-                data: data[2],
-                yAxis: 1
-            }
-        ],
-        plotOptions: {
-            candlestick: {
-                color: 'dodgerblue',
-                lineColor: 'blue',
-                upColor: 'tomato',
-                upLineColor: 'red'
-            },
         },
+        series:             
+            [{
+                type: 'line',
+                name: 'KOSPI 지수',
+                data: data,
+            }],
         //툴팁 한글화
         tooltip: {
             dateTimeLabelFormats: {
@@ -171,12 +123,13 @@ const HighChart = ({ data }) => {
         }
     };
     return (
-        data.length === 0 ? <div>No Data</div> :
+        <div>
             <HighchartsReact
-                    highcharts={Highcharts}
-                    constructorType={'stockChart'} // Highstock 사용
-                    options={options}
+                highcharts={Highcharts}
+                constructorType={'stockChart'} // Highstock 사용
+                options={options}
             />
+        </div>
     )
 }
-export default HighChart;
+export default KospiChart;

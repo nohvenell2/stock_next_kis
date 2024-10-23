@@ -1,43 +1,47 @@
-import React, { useState } from 'react';
+'use client'
+import React, { Suspense, useEffect, useState } from 'react';
 import StockSelector from './StockSelector';
 import './TopBar.css';
-const period_label = {'일':'D','주':'W','월':'M'}
-const TopBar = ({onChangeStock,onChangePeriod}) => {
-	const [selectedButton, setSelectedButton] = useState('일');
-	const handleButtonClick = (buttonName) => {
-		setSelectedButton(buttonName);
-		onChangePeriod(period_label[buttonName]);
-	};
-
+import { useRouter,usePathname } from 'next/navigation';
+import PeriodButton from './PeriodButton';
+import Link from 'next/link';
+const TopBar = () => {
+	//STATE - Stock
+	const [stock,setStock] = useState('')
+	const pathname = usePathname();
+    useEffect(()=>{
+        const currentStock = pathname.substring(12)
+        setStock(currentStock)
+    },[pathname])
+	//STATE - Period
+	const [period,setPeriod] = useState('D')
+	//APPLY STATE - stock 또는 period 가 변경되면 해당 url 로 이동
+	const router = useRouter()
+	useEffect(()=>{
+		if (stock){
+			const stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock-info/${stock}?period=${period}`
+            router.push(stock_url)
+        }
+	},[stock,period])
+	//RENDER
 	return (
 		<div className="top-bar">
+			{/* TITLE */}
 			<div className="title">
-				KRX100 주식정보
+				<Link href='/'>
+					KOSPI 주식정보
+				</Link>
 			</div>
-
+			{/* SELECTOR */}
 			<div className="search">
 				<div className="stock-selector-wrapper">
-                    <StockSelector onSelect={onChangeStock}/> 
+					<Suspense fallback={<div>Loading...</div>}>
+                    	<StockSelector onSelect={setStock} currentStock={stock}/> 
+					</Suspense>
                 </div>
 			</div>
-
-			<div className="buttons">
-				<button
-					className={selectedButton === '일' ? 'active' : ''}
-					onClick={() => handleButtonClick('일')}>
-					일
-				</button>
-				<button
-					className={selectedButton === '주' ? 'active' : ''}
-					onClick={() => handleButtonClick('주')}>
-					주
-				</button>
-				<button
-					className={selectedButton === '월' ? 'active' : ''}
-					onClick={() => handleButtonClick('월')}>
-					월
-				</button>
-			</div>
+			{/* PERIOD BUTTON */}
+			<PeriodButton onSelect={setPeriod}/>
 		</div>
 	);
 };
