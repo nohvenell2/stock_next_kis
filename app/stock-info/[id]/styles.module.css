@@ -1,4 +1,13 @@
-.container{
-    display:grid;
-    grid-template-columns: 10fr 1fr;
+.container {
+    margin-top: 4em;
+    display: flex;
+    flex-wrap: wrap;
+}
+.item:first-child {
+    overflow: auto;
+    flex: 1 0 800px;
+}
+
+.item:last-child {
+    flex: 0 0 350px;
 }

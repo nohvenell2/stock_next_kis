@@ -2,7 +2,7 @@
 import Highcharts from 'highcharts/highstock';
 import { useEffect } from 'react';
 import HighchartsReact from 'highcharts-react-official';
-import Options_Korean from '@/constants/chart_korean.js';
+import Options_Korean from '@/constants/chart_korean';
 //차트 한글화 옵션
 const lang_Options = Options_Korean
 const KospiChart = ({ data }) => {
@@ -14,7 +14,7 @@ const KospiChart = ({ data }) => {
     }, [])
     const options = {
         chart: {
-            height: '55%'
+            height: '55%',
         },
         accessibility: {
             enabled: false

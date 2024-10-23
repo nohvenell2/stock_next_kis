@@ -1,26 +1,24 @@
-// pages/index.js
 import HighChart from "@/components/HighChart";
 import StockInfo from "@/components/StockInfo";
-import stock_CodeName from "@/constants/stock_code_name";
+import { stock_code_name } from "@/constants/stock_code_name";
 import get_data from "@/util/get_data";
 import styles from './styles.module.css'
+export const revalidate = 60 * 60 * 60; // 하루마다 갱신 
 export function generateMetadata({params:{id}}){
     return ({
-        title: stock_CodeName[id]
+        title: stock_code_name[id]
     })
 }
 const StockPage = async ({params:{id},searchParams:{period}}) => {
     const data = await get_data(id,period)
     //RENDER
     return (
-        <div>
-            <div className='flex w-full gap-5 mt-24'>
-                <div className="flex-grow min-w-0">
-                    <HighChart data={data} />
-                </div>
-                <div className="flex-shrink-0 pr-3 basis-1/4 min-w-[300px] max-w-[350px]">
-                    <StockInfo data={data[0]} />
-                </div>
+        <div className={styles.container}>
+            <div className={styles.item}>
+                <HighChart data={data}/>
+            </div>
+            <div className={styles.item}>
+                <StockInfo data={data[0]} />
             </div>
         </div>
     );
