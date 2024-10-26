@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { stock_code_name,stock_code_codes } from '@/constants/stock_code_name';
 const selectOptions = stock_code_codes.map(c=>({
@@ -7,7 +7,6 @@ const selectOptions = stock_code_codes.map(c=>({
     label: `${c.stock_name} [${c.stock_code}]`
 }))
 const StockSelector = ({ onSelect }) => {
-    const selector = useRef()
     //Selector 에서 하나 골랐을 때 실행하는 함수
     const [Loaded,setLoaded] = useState(false)
     useEffect(()=>setLoaded(true),[])
@@ -19,7 +18,6 @@ const StockSelector = ({ onSelect }) => {
     if (!Loaded) return <></>
     return (
         <Select
-            ref = {selector}
             options={selectOptions}
             onChange={handleChange}
             placeholder="Choose a stock"
