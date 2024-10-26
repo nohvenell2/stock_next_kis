@@ -15,7 +15,7 @@ async function get_data(symbol){
             { time: modTime(d.trade_date), open: Number(d.open_price), high: Number(d.high_price),
             low: Number(d.low_price), close: Number(d.close_price) } 
         )
-        volume_data.push({time: modTime(d.trade_date), value:Number(d.accumulated_volume)})
+        volume_data.push({time: modTime(d.trade_date), value:Number(d.volume)})
     })
     return [info,price_data,volume_data]
 }
