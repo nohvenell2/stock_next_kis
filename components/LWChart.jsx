@@ -1,10 +1,12 @@
 'use client'
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
+import LWChartLegend from './LWChart_legend';
 
-const LWChart = ({chartTitle, data_ohlc, data_volume}) => {
+const LWChart = ({ chartTitle, data_ohlc, data_volume }) => {
     const chartContainerRef = useRef();
-    const chartRef = useRef();
+    const tooltipRef = useRef()
+    const [cursorData, setCursorData] = useState(null)
     const price_formatter_ko = p => `${p}`
     useEffect(() => {
         // 차트 생성
@@ -27,9 +29,10 @@ const LWChart = ({chartTitle, data_ohlc, data_volume}) => {
                 borderColor: '#D1D4DC',
             },
             localization:
-                {
-                    priceFormatter:price_formatter_ko
-                },
+            {
+                priceFormatter: price_formatter_ko
+                //todo timeFormatter: (time)=>{ date = new Date(time*1000) ...}
+            },
         });
 
         // 캔들스틱 시리즈 설정
@@ -73,6 +76,13 @@ const LWChart = ({chartTitle, data_ohlc, data_volume}) => {
             from: recentPeriodStart,
             to: recentPeriodEnd,
         });
+        chart.subscribeCrosshairMove((param) => {
+            if (param.time) {
+                const data = param.seriesData.get(candlestickSeries)
+                setCursorData(data)
+            }
+        })
+
         // 차트 크기 조정 이벤트 리스너
         const handleResize = () => {
             chart.applyOptions({
@@ -80,25 +90,18 @@ const LWChart = ({chartTitle, data_ohlc, data_volume}) => {
                 height: chartContainerRef.current.clientWidth * 0.4
             });
         };
-
         window.addEventListener('resize', handleResize);
-
-        // 차트 참조 저장
-        chartRef.current = chart;
         // 클린업 함수
         return () => {
             window.removeEventListener('resize', handleResize);
             chart.remove();
         };
     }, []);
-
     return (
         <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            <div className="text-lg font-semibold mb-4">{chartTitle}</div>
-            <div
-                ref={chartContainerRef}
-                className="w-full"
-            />
+            <div ref={chartContainerRef} className="w-full relative" >
+                <LWChartLegend chartTitle={chartTitle} cursorData={cursorData}/>
+            </div>
         </div>
     );
 };

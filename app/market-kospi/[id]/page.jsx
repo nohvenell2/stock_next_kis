@@ -15,7 +15,7 @@ const StockPage = async ({params:{id},searchParams:{period}}) => {
     return (
         <div className={styles.container}>
             <div className={styles.item}>
-                <LWChart data_ohlc={price_data} data_volume={volume_data}/>
+                <LWChart chartTitle={stock_code_name[id]} data_ohlc={price_data} data_volume={volume_data}/>
             </div>
             <div className={styles.item}>
                 <StockInfo data={info_data} />
