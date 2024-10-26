@@ -2,10 +2,10 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart } from 'lightweight-charts';
 
-const LWChart = ({data_ohlc, data_volume}) => {
+const LWChart = ({chartTitle, data_ohlc, data_volume}) => {
     const chartContainerRef = useRef();
     const chartRef = useRef();
-    const price_formatter_ko = p => `${p}원`
+    const price_formatter_ko = p => `${p}`
     useEffect(() => {
         // 차트 생성
         const chart = createChart(chartContainerRef.current, {
@@ -34,11 +34,11 @@ const LWChart = ({data_ohlc, data_volume}) => {
 
         // 캔들스틱 시리즈 설정
         const candlestickSeries = chart.addCandlestickSeries({
-            upColor: '#26a69a',
-            downColor: '#ef5350',
+            upColor: 'tomato',
+            downColor: 'dodgerblue',
             borderVisible: false,
-            wickUpColor: '#26a69a',
-            wickDownColor: '#ef5350',
+            wickUpColor: 'red',
+            wickDownColor: 'blue',
             priceScaleId: 'right',
         });
         candlestickSeries.priceScale().applyOptions({
@@ -54,7 +54,7 @@ const LWChart = ({data_ohlc, data_volume}) => {
             priceFormat: {
                 type: 'volume',
             },
-            priceScaleId: 'left',  // 독립적인 스케일 ID 할당
+            priceScaleId: 'volume',  // 독립적인 스케일 ID 할당
         });
         volumeSeries.priceScale().applyOptions({
             scaleMargins: {
@@ -62,17 +62,6 @@ const LWChart = ({data_ohlc, data_volume}) => {
                 bottom: 0,  // 아래쪽 여백 없음
             },
         })
-
-        // 거래량 차트의 색상을 캔들스틱에 따라 변경
-        data_volume.forEach((item, index) => {
-            if (index > 0) {
-                if (data_ohlc[index].close > data_ohlc[index].open) {
-                    item.color = '#26a69a';  // 상승시 녹색
-                } else {
-                    item.color = '#ef5350';  // 하락시 빨간색
-                }
-            }
-        });
 
         // 데이터 설정
         candlestickSeries.setData(data_ohlc);
@@ -105,7 +94,7 @@ const LWChart = ({data_ohlc, data_volume}) => {
 
     return (
         <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            <div className="text-lg font-semibold mb-4">Stock Price Chart</div>
+            <div className="text-lg font-semibold mb-4">{chartTitle}</div>
             <div
                 ref={chartContainerRef}
                 className="w-full"
