@@ -2,17 +2,12 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import StockSelector from './StockSelector';
 import './TopBar.css';
-import { useRouter,usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import PeriodButton from './PeriodButton';
 import Link from 'next/link';
 const TopBar = () => {
 	//STATE - Stock
 	const [stock,setStock] = useState('')
-	const pathname = usePathname();
-    useEffect(()=>{
-        const currentStock = pathname.split("/")[2]
-        setStock(currentStock)
-    },[pathname])
 	//STATE - Period
 	const [period,setPeriod] = useState('D')
 	//APPLY STATE - stock 또는 period 가 변경되면 해당 url 로 이동
@@ -41,7 +36,7 @@ const TopBar = () => {
 			<div className="search">
 				<div className="stock-selector-wrapper">
 					<Suspense fallback={<div>Loading...</div>}>
-                    	<StockSelector onSelect={setStock} currentStock={stock}/> 
+                    	<StockSelector onSelect={setStock}/> 
 					</Suspense>
                 </div>
 			</div>
