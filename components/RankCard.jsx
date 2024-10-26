@@ -8,7 +8,7 @@ export default function RankCard({ title, data, value_color }){
         <ul className="space-y-2">
             {data.map((d, i) => (
                 <li key={i}>
-                    <Link href={`/stock-info/${d[0]}?period=D`} className="flex items-center justify-between py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-gray-100">
+                    <Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}/${d[0]}?period=D`} className="flex items-center justify-between py-2 px-3 rounded-lg transition-colors duration-200 hover:bg-gray-100">
                         <span className="flex items-center space-x-2">
                             <span className="w-6 h-6 flex items-center justify-center bg-blue-500 text-white rounded-full text-sm font-medium">
                                 {i + 1}

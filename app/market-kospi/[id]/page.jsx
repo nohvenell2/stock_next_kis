@@ -1,24 +1,24 @@
-import HighChart from "@/components/HighChart";
+import LWChart from "@/components/LWChart";
 import StockInfo from "@/components/StockInfo";
 import { stock_code_name } from "@/constants/stock_code_name";
-import get_data from "@/util/get_data";
 import styles from './styles.module.css'
-export const revalidate = 60 * 60 * 60; // 하루마다 갱신 
+import get_data_lwchart from "@/util/get_data_lwchart";
 export function generateMetadata({params:{id}}){
     return ({
         title: stock_code_name[id]
     })
 }
 const StockPage = async ({params:{id},searchParams:{period}}) => {
-    const data = await get_data(id,period)
+    const [info_data,price_data, volume_data] = await get_data_lwchart(id,period)
+    //const [info_data,price_data, volume_data] = await get_data_lwchart('005380',period)
     //RENDER
     return (
         <div className={styles.container}>
             <div className={styles.item}>
-                <HighChart data={data}/>
+                <LWChart data_ohlc={price_data} data_volume={volume_data}/>
             </div>
             <div className={styles.item}>
-                <StockInfo data={data[0]} />
+                <StockInfo data={info_data} />
             </div>
         </div>
     );

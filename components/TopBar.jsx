@@ -10,7 +10,7 @@ const TopBar = () => {
 	const [stock,setStock] = useState('')
 	const pathname = usePathname();
     useEffect(()=>{
-        const currentStock = pathname.substring(12)
+        const currentStock = pathname.split("/")[2]
         setStock(currentStock)
     },[pathname])
 	//STATE - Period
@@ -19,7 +19,7 @@ const TopBar = () => {
 	const router = useRouter()
 	useEffect(()=>{
 		if (stock){
-			const stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock-info/${stock}?period=${period}`
+			const stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_KOSPI_URL}/${stock}?period=${period}`
             router.push(stock_url)
         }
 	},[stock,period])
@@ -28,9 +28,14 @@ const TopBar = () => {
 		<div className="top-bar">
 			{/* TITLE */}
 			<div className="title">
-				<Link href='/'>
-					KOSPI 주식정보
-				</Link>
+				<div className='flex flex-row gap-8'>
+					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`}>
+						KOSPI
+					</Link>
+					<Link href={`/${process.env.NEXT_PUBLIC_SNP500_URL}`}>
+						S&P500
+					</Link>
+				</div>
 			</div>
 			{/* SELECTOR */}
 			<div className="search">

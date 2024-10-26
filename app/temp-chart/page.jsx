@@ -1,4 +1,4 @@
-import StockChart from "@/components/TempChart";
+import StockChart from "@/components/LWChart";
 import get_data from "@/util/get_data";
 function modTime(time) {
     const date = new Date(time)

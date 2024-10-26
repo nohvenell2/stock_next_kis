@@ -3,8 +3,8 @@ import "./globals.css";
 
 export const metadata = {
   title:{
-    default : 'KOSPI',
-    template : '%s | KOSPI'
+    default : 'STOCK',
+    template : '%s | STOCK'
   },
   description: "stock app",
 };

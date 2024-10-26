@@ -4,8 +4,10 @@
     flex-wrap: wrap;
 }
 .item:first-child {
+    margin-left: 4em;
     overflow: auto;
     flex: 1 0 800px;
+
 }
 
 .item:last-child {
