@@ -2,12 +2,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import LWChartLegend from './LWChart_legend';
+import { modTime } from '@/util/format_time';
 
 const LWChart = ({ chartTitle, data_ohlc, data_volume }) => {
     const chartContainerRef = useRef();
-    const tooltipRef = useRef()
     const [cursorData, setCursorData] = useState(null)
-    const price_formatter_ko = p => `${p}`
+    //todo kospi면 int(p), snp500 이면 p.toFixed(2) 또는 공식사이트에서 price format 찾아보기
+    const price_formatter_ko = p => `${p}` //그래프 y축 가격 형식 변경함수
+    const time_formatter_ko = (time) => modTime(time) //그래프 x 축 시간 형식 변경함수
     useEffect(() => {
         // 차트 생성
         const chart = createChart(chartContainerRef.current, {
@@ -30,8 +32,9 @@ const LWChart = ({ chartTitle, data_ohlc, data_volume }) => {
             },
             localization:
             {
-                priceFormatter: price_formatter_ko
+                priceFormatter: price_formatter_ko,
                 //todo timeFormatter: (time)=>{ date = new Date(time*1000) ...}
+                timeFormatter: time_formatter_ko
             },
         });
 

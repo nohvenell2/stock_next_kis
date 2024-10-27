@@ -22,7 +22,6 @@ const TopBar = ({snp500Symbols, snp500Data}) => {
 		else if (snp500Symbols.includes(stock)){
 			stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_SNP500_URL}/${stock}`
 		}
-		console.log(stock_url)
 		router.push(stock_url)
 	},[stock,period])
 	//RENDER

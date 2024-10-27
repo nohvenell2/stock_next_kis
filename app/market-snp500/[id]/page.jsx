@@ -3,6 +3,7 @@ import LWChart from "@/components/LWChart";
 import styles from './styles.module.css';
 import get_data_lwchart from "@/util/snp500/get_data_lwchart";
 import { symbols_arr,symbols_obj } from "@/util/snp500/get_symbols";
+import StockInfo_snp from "@/components/StockInfo_snp";
 export function generateMetadata({params:{id}}){
     return ({
         title: 'TODO:CHANGE'
@@ -17,12 +18,11 @@ const StockPage = async ({params:{id}}) => {
         <div className={styles.container}>
             <div className={styles.item}>
                 <LWChart chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
-            </div>
-            {/*
+            </div>         
             <div className={styles.item}>
-                <StockInfo data={info_data} />
+                <StockInfo_snp data={info_data} />
             </div>
-            */}
+        
         </div>
     );
 };

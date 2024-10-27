@@ -2,10 +2,11 @@
 import get_price_snp500 from "./get_price.js";
 import { modTime } from "../format_time.js";
 import { symbols_arr, symbols_obj } from "./get_symbols.js";
+import get_stockInfo from "./get_info.js";
 async function get_data(symbol){
     if (!symbols_arr.includes(symbol)) return null
     const data = await get_price_snp500(symbol)
-    const info = symbols_obj[symbol]
+    const info = await get_stockInfo(symbol)
     const price_data = []
     const volume_data = []
     data.forEach((d) => {
