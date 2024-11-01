@@ -1,3 +1,5 @@
+// This software includes components from TradingView licensed by TradingView Inc.
+// See https://www.tradingview.com/ for more information.
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
@@ -16,6 +18,8 @@ const LWChart = ({ chartTitle, data_ohlc, data_volume }) => {
             layout: {
                 background: { color: '#ffffff' },
                 textColor: '#333333',
+                //저작권 로고
+                attributionLogo:true,
             },
             grid: {
                 vertLines: { color: '#f0f0f0' },

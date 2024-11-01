@@ -6,6 +6,7 @@ import isCode from "./isCode.js"
  * @param {string} : unix time
  * @returns {string} : yyyy-mm-dd
  */
+//todo modTime 수정하기 time 객체로 db 로 부터 받을 예정 
 function modTime(time) {
     const date = new Date(time)
     const yy = String(date.getFullYear());
@@ -30,6 +31,7 @@ export default async function get_data_lwchart(code, period = 'D') {
     data.forEach((d) => {
         //UTC 시간 맞추기
         const time = new Date(d.trading_date).getTime() + 9 * 60 * 60 * 1000
+        //todo modTime 수정하기 time 객체로 db 로 부터 받을 예정 
         price_data.push(
             { time: modTime(time), open: d.open_price, high: d.high_price, low: d.low_price, close: d.close_price } 
         )

@@ -1,5 +1,5 @@
 import LWChart from "@/components/LWChart";
-import StockInfo from "@/components/StockInfo";
+//import StockInfo from "@/components/StockInfo";
 import { stock_code_name } from "@/constants/stock_code_name";
 import styles from './styles.module.css'
 import get_data_lwchart from "@/util/get_data_lwchart";
@@ -17,9 +17,9 @@ const StockPage = async ({params:{id},searchParams:{period}}) => {
             <div className={styles.item}>
                 <LWChart chartTitle={stock_code_name[id]} data_ohlc={price_data} data_volume={volume_data}/>
             </div>
-            <div className={styles.item}>
+{/*             <div className={styles.item}>
                 <StockInfo data={info_data} />
-            </div>
+            </div> */}
         </div>
     );
 };
