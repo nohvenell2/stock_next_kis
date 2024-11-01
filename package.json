@@ -12,6 +12,7 @@
     "dotenv": "^16.4.5",
     "highcharts": "^11.4.8",
     "highcharts-react-official": "^3.2.1",
+    "lightweight-charts": "^4.2.1",
     "mysql2": "^3.11.3",
     "next": "14.2.12",
     "react": "^18",

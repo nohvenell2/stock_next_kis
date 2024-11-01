@@ -2,19 +2,24 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
 import { stock_code_name,stock_code_codes } from '@/constants/stock_code_name';
-const selectOptions = stock_code_codes.map(c=>({
+const kospiData = stock_code_codes.map(c=>({
     value: c.stock_code,
     label: `${c.stock_name} [${c.stock_code}]`
 }))
-const StockSelector = ({ onSelect,currentStock }) => {
-
+const StockSelector = ({ snp500Symbols, snp500Data,onSelect }) => {
+    const snp500data = snp500Symbols.map((symbol)=>({
+        value: symbol,
+        label: `${snp500Data[symbol].stock_name} [${symbol}]`
+    }))
+    const selectOptions = [...kospiData,...snp500data]
     //Selector 에서 하나 골랐을 때 실행하는 함수
     const [Loaded,setLoaded] = useState(false)
     useEffect(()=>setLoaded(true),[])
     const handleChange = (e) => {
-        onSelect(e?.value)
+        if (!e?.value) return
+        onSelect(e.value)
     };
-       //Render
+    //Render
     if (!Loaded) return <></>
     return (
         <Select
@@ -23,7 +28,8 @@ const StockSelector = ({ onSelect,currentStock }) => {
             placeholder="Choose a stock"
             styles={customStyles}
             isClearable
-            value = {currentStock? {value:currentStock, label:`${stock_code_name[currentStock]} [${currentStock}]`}:null}
+            escapeClearsValue
+            value=''
         />
     );
 };

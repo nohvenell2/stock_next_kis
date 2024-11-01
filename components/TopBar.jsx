@@ -2,41 +2,47 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import StockSelector from './StockSelector';
 import './TopBar.css';
-import { useRouter,usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import PeriodButton from './PeriodButton';
 import Link from 'next/link';
-const TopBar = () => {
+import { stock_code_name } from '@/constants/stock_code_name';
+const TopBar = ({snp500Symbols, snp500Data}) => {
 	//STATE - Stock
 	const [stock,setStock] = useState('')
-	const pathname = usePathname();
-    useEffect(()=>{
-        const currentStock = pathname.substring(12)
-        setStock(currentStock)
-    },[pathname])
 	//STATE - Period
 	const [period,setPeriod] = useState('D')
 	//APPLY STATE - stock 또는 period 가 변경되면 해당 url 로 이동
 	const router = useRouter()
 	useEffect(()=>{
-		if (stock){
-			const stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock-info/${stock}?period=${period}`
-            router.push(stock_url)
+		//todo 주식 구분해서 링크하기
+		var stock_url = ''
+		if (Object.keys(stock_code_name).includes(stock)){
+			stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_KOSPI_URL}/${stock}?period=${period}`
         }
+		else if (snp500Symbols.includes(stock)){
+			stock_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_SNP500_URL}/${stock}`
+		}
+		router.push(stock_url)
 	},[stock,period])
 	//RENDER
 	return (
 		<div className="top-bar">
 			{/* TITLE */}
 			<div className="title">
-				<Link href='/'>
-					KOSPI 주식정보
-				</Link>
+				<div className='flex flex-row gap-8'>
+					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`}>
+						KOSPI
+					</Link>
+					<Link href={`/${process.env.NEXT_PUBLIC_SNP500_URL}`}>
+						S&P500
+					</Link>
+				</div>
 			</div>
 			{/* SELECTOR */}
 			<div className="search">
 				<div className="stock-selector-wrapper">
 					<Suspense fallback={<div>Loading...</div>}>
-                    	<StockSelector onSelect={setStock} currentStock={stock}/> 
+                    	<StockSelector snp500Symbols={snp500Symbols} snp500Data={snp500Data} onSelect={setStock}/> 
 					</Suspense>
                 </div>
 			</div>
@@ -47,3 +53,4 @@ const TopBar = () => {
 };
 
 export default TopBar;
+

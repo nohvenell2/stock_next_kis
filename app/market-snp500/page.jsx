@@ -1,10 +1,10 @@
 export function generateMetadata({params:{id}}){
     return ({
-        title:'HOME'
+        title:'S&P500'
     })
 }
-const Home= () => {
+const Page = () => {
     return <h1 className="m-40 text-8xl">공사중</h1>
 };
 
-export default Home;
+export default Page;

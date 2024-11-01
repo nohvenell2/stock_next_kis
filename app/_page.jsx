@@ -3,7 +3,7 @@ import KospiChart from "@/components/KospiChart";
 import { rank_VolumeP,rank_VolumeQ, rank_RateUp, rank_RateDown } from "@/util/get_rank";
 import RankCard from "@/components/RankCard";
 export const metadata = {
-    title: 'Home | KOSPI'
+    title: 'HOME'
 }
 const Home = async () => {
     const data = await get_kospiIndex()
