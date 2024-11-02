@@ -1,4 +1,4 @@
-import connectDB from "./connectDB.js";
+import connectDB from "./db/connectDB.js";
 import { formatNumberShort } from "./format_number.js";
 const RANK_MAX = 5;
 //시가총액 순위

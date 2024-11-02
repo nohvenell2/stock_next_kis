@@ -1,8 +1,8 @@
 import './TopBar.css';
 import StockSelector from './StockSelector';
 import Link from 'next/link';
-import { kospi_symbols, snp500_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
-const TopBar = () => {
+import { snp500_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
+function TopBar_snp500(){
 	//RENDER
 	return (
 		<div className="top-bar">
@@ -20,16 +20,12 @@ const TopBar = () => {
 			{/* SELECTOR */}
 			<div className="search">
 				<div className="stock-selector-wrapper">
-					<Suspense fallback={<div>Loading...</div>}>
-                    	<StockSelector snp500_symbols={snp500_symbols} kospi_symbols={kospi_symbols} symbolsData={symbolsData}/> 
-					</Suspense>
+                    <StockSelector symbols={snp500_symbols} symbolsData={symbolsData} market='snp500'/> 
                 </div>
 			</div>
-			{/* PERIOD BUTTON */}
-			{/* <PeriodButton onSelect={setPeriod}/> */}
 		</div>
 	);
 };
 
-export default TopBar;
+export default TopBar_snp500;
 

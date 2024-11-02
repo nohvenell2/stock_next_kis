@@ -1,7 +1,7 @@
 // 임시로 db 에서 코드 가져와 json 으로 저장하는 파일 
 //todo 파일 기반으로 주식 코드 이름 정보를 다루기 때문에 주기적으로 실행해야함
 //todo 추후 fetching 후 상태로 관리하도록 변경해야한다
-import connectDB from "../util/connectDB.js";
+import connectDB from "../util/db/connectDB.js";
 import { writeFileSync } from 'fs';
 //DB 에서 주식 코드, 이름 가져오기
 const conn = await connectDB()

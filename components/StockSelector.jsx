@@ -1,26 +1,28 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation'
 import Select from 'react-select';
-import { stock_code_name,stock_code_codes } from '@/constants/stock_code_name';
-const kospiData = stock_code_codes.map(c=>({
-    value: c.stock_code,
-    label: `${c.stock_name} [${c.stock_code}]`
-}))
-const StockSelector = ({ snp500Symbols, snp500Data,onSelect }) => {
-    const snp500data = snp500Symbols.map((symbol)=>({
-        value: symbol,
-        label: `${snp500Data[symbol].stock_name} [${symbol}]`
-    }))
-    const selectOptions = [...kospiData,...snp500data]
-    //Selector 에서 하나 골랐을 때 실행하는 함수
+function StockSelector({ symbols, symbolsData, market }){
+    let base_url;
+    if (market == 'kospi'){base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_KOSPI_URL}/`}
+    else if (market == 'snp500'){base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_SNP500_URL}/`}
+    const selectorRef = useRef()
+    const router = useRouter()
     const [Loaded,setLoaded] = useState(false)
     useEffect(()=>setLoaded(true),[])
+    const selectOptions = symbols.map((symbol)=>({
+        value: symbol,
+        label: `${symbolsData[symbol].stock_name} [${symbol}]`
+    }))
     const handleChange = (e) => {
         if (!e?.value) return
-        onSelect(e.value)
+        const value = e.value
+        const stock_url = base_url + value
+        //selectorRef.value = '' //debug 현재는 사이트 이동할때마다 재랜더링되어 무쓸모
+        router.push(stock_url)
     };
     //Render
-    if (!Loaded) return <></>
+    //if (!Loaded) return <></>
     return (
         <Select
             options={selectOptions}
@@ -29,7 +31,7 @@ const StockSelector = ({ snp500Symbols, snp500Data,onSelect }) => {
             styles={customStyles}
             isClearable
             escapeClearsValue
-            value=''
+            ref = {selectorRef}
         />
     );
 };

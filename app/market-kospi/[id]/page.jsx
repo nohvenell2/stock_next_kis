@@ -1,25 +1,28 @@
+//todo stock info card 컴포넌트 추가
 import LWChart from "@/components/LWChart";
-//import StockInfo from "@/components/StockInfo";
-import { stock_code_name } from "@/constants/stock_code_name";
+import { symbolsData } from "@/util/db/fetch_symbols.js";
+import { chartPrice_daily } from "@/util/chartdata_price_daily.js";
+import { chartData_info } from "@/util/chartdata_info.js";
+import TopBar_kospi from "@/components/TopBar_kospi";
+import StockInfo from "@/components/StockInfo";
 import styles from './styles.module.css'
-import get_data_lwchart from "@/util/get_data_lwchart";
 export function generateMetadata({params:{id}}){
     return ({
-        title: stock_code_name[id]
+        title: `${symbolsData[id].stock_name}`
     })
 }
 const StockPage = async ({params:{id},searchParams:{period}}) => {
-    const [info_data,price_data, volume_data] = await get_data_lwchart(id,period)
-    //const [info_data,price_data, volume_data] = await get_data_lwchart('005380',period)
-    //RENDER
+    const stock_name = symbolsData[id].stock_name
+    const { price_data, volume_data } = await chartPrice_daily(id,1000)
+    const info_data = await chartData_info(id)
     return (
         <div className={styles.container}>
             <div className={styles.item}>
-                <LWChart chartTitle={stock_code_name[id]} data_ohlc={price_data} data_volume={volume_data}/>
+                <LWChart chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
             </div>
-{/*             <div className={styles.item}>
+            <div className={styles.item}>
                 <StockInfo data={info_data} />
-            </div> */}
+            </div>
         </div>
     );
 };

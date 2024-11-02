@@ -37,3 +37,6 @@ next-env.d.ts
 
 # pm2
 ecosystem*
+
+# temp
+temp.js
