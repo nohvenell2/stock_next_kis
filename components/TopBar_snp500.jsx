@@ -12,7 +12,7 @@ function TopBar_snp500(){
 					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`}>
 						KOSPI
 					</Link>
-					<Link href={`/${process.env.NEXT_PUBLIC_SNP500_URL}`}>
+					<Link href={`/${process.env.NEXT_PUBLIC_SNP500_URL}`} className='underline'>
 						S&P500
 					</Link>
 				</div>
@@ -23,6 +23,7 @@ function TopBar_snp500(){
                     <StockSelector symbols={snp500_symbols} symbolsData={symbolsData} market='snp500'/> 
                 </div>
 			</div>
+			<div className='buttons'></div>
 		</div>
 	);
 };

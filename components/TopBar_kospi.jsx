@@ -9,7 +9,7 @@ function TopBar_kospi(){
 			{/* TITLE */}
 			<div className="title">
 				<div className='flex flex-row gap-8'>
-					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`}>
+					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`} className='underline'>
 						KOSPI
 					</Link>
 					<Link href={`/${process.env.NEXT_PUBLIC_SNP500_URL}`}>
