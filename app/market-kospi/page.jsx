@@ -1,3 +1,5 @@
+import Link from "next/navigation"
+
 //export const revalidate = 60 * 30;
 export function generateMetadata({ params: { id } }) {
     return ({
@@ -30,6 +32,12 @@ export function generateMetadata({ params: { id } }) {
 
 export default Page; */
 function Page(){
-    return <>공사중</>
+    return (
+        <div>
+            <h1>공사중</h1>
+            <Link href='/kospi'>KOSIP</Link>
+            <Link href='/snp500'>S&P500</Link>
+        </div>
+    )
 }
 export default Page
