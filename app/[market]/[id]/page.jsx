@@ -12,7 +12,7 @@ export function generateMetadata({params:{id}}){
 }
 const StockPage = async ({params:{id},searchParams:{period}}) => {
     const stock_name = symbolsData[id].stock_name
-    const { price_data, volume_data } = await chartPrice_daily(id,1000)
+    const { price_data, volume_data } = await chartPrice_daily(id,1825)
     const info_data = await chartData_info(id)
     return (
         <div className={styles.container}>
