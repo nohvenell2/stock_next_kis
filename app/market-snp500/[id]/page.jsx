@@ -3,7 +3,7 @@ import LWChart from "@/components/LWChart";
 import { symbolsData } from "@/util/db/fetch_symbols.js";
 import { chartPrice_daily } from "@/util/chartdata_price_daily.js";
 import { chartData_info } from "@/util/chartdata_info.js";
-import StockInfo from "@/components/StockInfo";
+import StockInfo from "@/components/StockInfoCard";
 import TopBar_snp500 from "@/components/TopBar_snp500";
 import styles from './styles.module.css'
 export function generateMetadata({ params: { id } }) {
