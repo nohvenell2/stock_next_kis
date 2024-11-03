@@ -1,42 +1,27 @@
+import { formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr } from "@/util/format_number";
 import React from "react";
-import styles from "./StockInfo.module.css"
-/**
- * 시가 총액을 'xx조 xx억 원' 형식으로 변환하는 함수
- * @param {number} marketCap - 시가 총액 (억 단위)
- * @returns {string} 변환된 시가 총액 문자열
- */
-const formatMarketCap = (marketCap) => {
-	if (marketCap >= 10000) {
-		// 1조 이상일 경우
-		const trillion = Math.floor(marketCap / 10000); // 조 단위
-		const billion = marketCap % 10000; // 억 단위
-		return `${trillion}조 ${billion}억`;
-	} else {
-		// 1조 미만일 경우
-		return `${marketCap}억 원`;
-	}
-};
-
-
-const StockInfo_snp = ( { data } ) => {
+const StockInfo = ( { data } ) => {
     if (!data) return <></>
 	const {
 		symbol,
         market,
 		stock_name,
 		sector_name,
-		price_change,
-		price_change_rate,
+		change,
+		rate,
 		volume,
         amount,
 		market_cap,
 		per,
 		eps,
 		pbr,
-        close_price,
-        open_price
+        close,
+        open,
+		currency
 	} = data;
-
+	const currency_symbols = {'KRW':'₩','USD':'$'}[currency]
+	const bignumber_function = {'KRW':formatBigNumber_kr,'USD':formatBigNumber_en}[currency]
+	const marketcap_function = {'KRW':formatMarketCap_kr,'USD':formatBigNumber_en}[currency]
 	return (
 		<div className="p-4 bg-white rounded-lg shadow-md max-w-sm">
 			{/* 주식 이름 및 코드 */}
@@ -44,8 +29,8 @@ const StockInfo_snp = ( { data } ) => {
 				<h2 className="text-xl font-bold">
 					{stock_name} <span className="text-gray-500">[{symbol}]</span>
 				</h2>
-				<p className={price_change > 0 ? 'text-red-500':'text-blue-700'}>
-					{price_change > 0 ? `+${price_change}원 ( ${price_change_rate}% )` : `${price_change}원 ( ${price_change_rate}% )`}
+				<p className={change > 0 ? 'text-red-500':'text-blue-700'}>
+					{change > 0 ? `+ ${change} $ ( ${rate}% )` : `${change} $ ( ${rate}% )`}
 				</p>
 			</div>
 
@@ -64,25 +49,25 @@ const StockInfo_snp = ( { data } ) => {
 				{/* 시가 / 종가 */}
 				<div>
 					<p className="font-semibold">시가</p>
-					<p>{open_price}$</p>
+					<p>{bignumber_function(open,currency_symbols)}</p>
 				</div>
 				<div>
 					<p className="font-semibold">종가</p>
-					<p>{close_price}$</p>
+					<p>{bignumber_function(close,currency_symbols)}</p>
 				</div>
                 {/* 거래량 / 거래액 */}
 				<div>
 					<p className="font-semibold">거래량</p>
-					<p>{volume}주</p>
+					<p>{formatBigNumber_kr(volume,'','주')}</p>
 				</div>
 				<div>
 					<p className="font-semibold">거래액</p>
-					<p>{amount}$</p>
+					<p>{bignumber_function(amount,currency_symbols)}</p>
 				</div>
 				{/* 시가 총액 / PER */}
 				<div>
 					<p className="font-semibold">시가 총액</p>
-					<p>{market_cap}$</p>
+					<p>{marketcap_function(market_cap,currency_symbols)}</p>
 				</div>
 				<div>
 					<p className="font-semibold">PER</p>
@@ -92,7 +77,7 @@ const StockInfo_snp = ( { data } ) => {
 				{/* EPS / PBR */}
 				<div>
 					<p className="font-semibold">EPS</p>
-					<p>{Math.floor(eps)}원</p>
+					<p>{eps}</p>
 				</div>
 				<div>
 					<p className="font-semibold">PBR</p>
@@ -103,4 +88,4 @@ const StockInfo_snp = ( { data } ) => {
 	);
 };
 
-export default StockInfo_snp;
+export default StockInfo;

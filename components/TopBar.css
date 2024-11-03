@@ -15,22 +15,23 @@
 
 /* 비율 설정 (1:6:1) */
 .title {
-	flex-grow: 1;
+	width: 200px;
 	font-size: 24px;
-	font-weight: bold;
+	font-weight: bold;;
+	justify-content: center;
 }
 
 .search {
-	flex-grow: 6;
+	flex: 1;
 	display: flex;
 	justify-content: center;
 }
 .stock-selector-wrapper {
     width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
-	max-width: 800px;
+	max-width: 900px;
 }
 .buttons {
-	flex-grow: 1;
+	width: 200px;
 	display: flex;
 	justify-content: center;
 }

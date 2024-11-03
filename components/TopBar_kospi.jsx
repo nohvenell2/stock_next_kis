@@ -1,16 +1,16 @@
 import './TopBar.css';
 import StockSelector from './StockSelector';
 import Link from 'next/link';
-import { kospi_symbols, snp500_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
-function TopBar(){
+import { kospi_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
+function TopBar_kospi(){
 	//RENDER
 	return (
 		<div className="top-bar">
 			{/* TITLE */}
 			<div className="title">
 				<div className='flex flex-row gap-8'>
-					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`}>
-						<div className='underline'>KOSPI</div>
+					<Link href={`/${process.env.NEXT_PUBLIC_KOSPI_URL}`} className='underline'>
+						KOSPI
 					</Link>
 					<Link href={`/${process.env.NEXT_PUBLIC_SNP500_URL}`}>
 						S&P500
@@ -20,12 +20,13 @@ function TopBar(){
 			{/* SELECTOR */}
 			<div className="search">
 				<div className="stock-selector-wrapper">
-                    <StockSelector symbols={snp500_symbols} symbolsData={symbolsData} market='snp500'/> 
+                    <StockSelector symbols={kospi_symbols} symbolsData={symbolsData} market='kospi'/> 
                 </div>
 			</div>
+			<div className='buttons'></div>
 		</div>
 	);
 };
 
-export default TopBar;
+export default TopBar_kospi;
 

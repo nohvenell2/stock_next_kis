@@ -7,7 +7,10 @@
     margin-left: 4em;
     overflow: auto;
     flex: 1 0 1000px;
+
 }
+
 .item:last-child {
     flex: 0 0 350px;
+    margin-right: 4em;
 }
