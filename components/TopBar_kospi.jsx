@@ -23,6 +23,7 @@ function TopBar_kospi(){
                     <StockSelector symbols={kospi_symbols} symbolsData={symbolsData} market='kospi'/> 
                 </div>
 			</div>
+			<div className='buttons'></div>
 		</div>
 	);
 };

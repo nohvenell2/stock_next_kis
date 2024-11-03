@@ -1,29 +1,5 @@
+import { formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr } from "@/util/format_number";
 import React from "react";
-
-function formatBigNumber_en(number,front = '', back = '') {
-	let number_short;
-	if (number < 1e3) number_short = `${number.toFixed(2)}` // Less than Thousand
-    if (number >= 1e3) number_short = `${(number / 1e3).toFixed(2)}K`; // Thousand
-    if (number >= 1e6) number_short = `${(number / 1e6).toFixed(2)}M`; // Million
-    if (number >= 1e9) number_short = `${(number / 1e9).toFixed(2)}B`; // Billion
-    if (number >= 1e12) number_short = `${(number / 1e12).toFixed(2)}T`; // Trillion
-    return `${front} ${number_short} ${back}`;
-}
-function formatBigNumber_kr(number,front = '', back = ''){
-	let number_short;
-	if (number < 1e4) number_short = `${(number / 1e4).toFixed(2)}`;   // 만 이하
-    if (number >= 1e4) number_short = `${(number / 1e4).toFixed(2)}만`;   // 만
-    if (number >= 1e8) number_short = `${(number / 1e8).toFixed(2)}억`;   // 억
-	if (number >= 1e12) number_short = `${(number / 1e12).toFixed(2)}조`; // 조
-	return `${front} ${number_short} ${back}`;
-}
-function formatMarketCap_kr(number,front = '', back = ''){
-	let number_short;
-	if (number < 1e4) number_short = `${(number / 1e4).toFixed(2)}억`;   // 만
-    if (number >= 1e4) number_short = `${(number / 1e4).toFixed(2)}조`;   // 만
-    if (number >= 1e8) number_short = `${(number / 1e8).toFixed(2)}경`;   // 억
-	return `${front} ${number_short} ${back}`;
-}
 const StockInfo = ( { data } ) => {
     if (!data) return <></>
 	const {
