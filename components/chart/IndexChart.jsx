@@ -35,16 +35,13 @@ const IndexChart = ({ chartTitle, data_index }) => {
                 },
                 localization:
                 {
-                    //todo timeFormatter: (time)=>{ date = new Date(time*1000) ...}
                     timeFormatter: time_formatter_ko
                 },
             });
 
             // 캔들스틱 시리즈 설정
-            const areaSeries = chart.addAreaSeries({
+            const areaSeries = chart.addLineSeries({
                 lineColor:'#2962FF',
-                bottomColor: '#FFFFFF',
-                topColor:'#FFFFFF',
                 lineWidth:2
             });
 

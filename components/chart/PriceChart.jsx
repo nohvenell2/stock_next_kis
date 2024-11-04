@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import PriceChartLegend from './PriceChart_legend';
 import { modTime } from '@/util/format_time';
+import { formatBigNumber_kr, formatNumberComma } from '@/util/format_number';
 
-const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
+const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     const chartContainerRef = useRef();
     const chartRef = useRef();
     const candlestickSeriesRef = useRef();
@@ -13,10 +14,20 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
     const [viewPeroid, setViewPeriod] = useState(75);
     const [cursorData, setCursorData] = useState(null);
     const [chartType, setChartType] = useState('Candle');
-
-    const price_formatter_ko = p => `${p}`;
-    const time_formatter_ko = (time) => modTime(time);
-
+    // 화폐 단위
+    const currency_symbol = { 'kospi': '₩', 'snp500' : '$' }?.[market]
+    // 차트 x축 시간 포멧 변경
+    function time_formatter_ko(time){ return modTime(time); }
+    // 차트 y축 가격 포멧 변경
+    function price_formatter(price){
+        const price_str = price.toFixed(2);
+        const price_convert = price_str.endsWith(".00") ? parseInt(price_str) : price_str
+        return `${currency_symbol}${formatNumberComma(price_convert)}`
+    }
+    // 차트 y축 거래량 포멧 변경
+    function volume_formatter(volume){
+        return formatBigNumber_kr(volume,'','주')
+    }
     useEffect(() => {
         const chart = createChart(chartContainerRef.current, {
             layout: {
@@ -25,8 +36,12 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
                 attributionLogo: true,
             },
             grid: {
-                vertLines: { color: '#f0f0f0' },
-                horzLines: { color: '#f0f0f0' },
+                vertLines: {
+                    color: '#f0f0f0',
+                },
+                horzLines: {
+                    color: '#f0f0f0',
+                },
             },
             width: chartContainerRef.current.clientWidth,
             height: chartContainerRef.current.clientWidth * 0.4,
@@ -36,9 +51,9 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
             },
             rightPriceScale: {
                 borderColor: '#D1D4DC',
+
             },
             localization: {
-                priceFormatter: price_formatter_ko,
                 timeFormatter: time_formatter_ko,
             },
         });
@@ -52,18 +67,25 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
             wickUpColor: 'red',
             wickDownColor: 'blue',
             priceScaleId: 'right',
+            priceFormat: {
+                type:'custom',
+                formatter:price_formatter
+            }
         });
         candlestickSeries.setData(data_ohlc);
         candlestickSeries.priceScale().applyOptions({
-            scaleMargins: { top: 0.1, bottom: 0.2 },
+            scaleMargins: { top: 0.1, bottom: 0.3 },
         });
         candlestickSeriesRef.current = candlestickSeries; // 캔들스틱 차트 ref 
         // 거래량 차트 설정
         const volumeSeries = chart.addHistogramSeries({
             color: '#26a69a',
-            priceFormat: { type: 'volume' },
             priceScaleId: 'volume',
-            visible:true
+            visible: true,
+            priceFormat: { 
+                type: 'custom',
+                formatter: volume_formatter
+            },
         });
         volumeSeries.setData(data_volume);
         volumeSeries.priceScale().applyOptions({
@@ -74,7 +96,7 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
         const lineSeries = chart.addLineSeries({
             color: '#2962FF',
             priceScaleId: 'right',
-            visible:false
+            visible: false
         });
         lineSeries.setData(data_ohlc.map((d) => ({ time: d.time, value: d.close })));
         lineSeriesRef.current = lineSeries; // 라인 차트 ref
@@ -86,19 +108,18 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
             from: recentPeriodStart,
             to: recentPeriodEnd,
         });
-        
+
         // 현재 마우스 위치의 차트 값 state 로 관리
         chart.subscribeCrosshairMove((param) => {
-            if (param.time) {
-                const data = param.seriesData.get(candlestickSeries);
-                setCursorData(data);
-            }
+            if (!param?.time) return
+            const data = param.seriesData.get(candlestickSeries);
+            setCursorData(data);
         });
         // 사이즈 조절 함수
         const handleResize = () => {
             chart.applyOptions({
                 width: chartContainerRef.current.clientWidth,
-                height: chartContainerRef.current.clientWidth * 0.4,
+                height: chartContainerRef.current.clientHeight,
             });
         };
         window.addEventListener('resize', handleResize);
@@ -119,20 +140,20 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
         }
     }, [chartType]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const recentPeriodStart = data_ohlc[data_ohlc.length - viewPeroid]?.time || data_ohlc[0]?.time;
         const recentPeriodEnd = data_ohlc[data_ohlc.length - 1]?.time;
         chartRef.current.timeScale().setVisibleRange({
             from: recentPeriodStart,
             to: recentPeriodEnd,
         });
-    },[viewPeroid])
+    }, [viewPeroid])
 
     return (
         <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             {/* <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData}/> */}
             <div ref={chartContainerRef} className="w-full relative">
-            <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData} ref={chartRef} />
+                <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData} />
             </div>
             <div>
                 <button
@@ -163,6 +184,7 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
                 >
                     Line
                 </button>
+                <span>|</span>
                 <button
                     onClick={() => setViewPeriod(24)}
                     style={{
@@ -175,7 +197,7 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
                         cursor: 'pointer',
                     }}
                 >
-                    1m
+                    1M
                 </button>
                 <button
                     onClick={() => setViewPeriod(66)}
@@ -189,7 +211,7 @@ const PriceChart = ({ chartTitle, data_ohlc, data_volume }) => {
                         cursor: 'pointer',
                     }}
                 >
-                    3m
+                    3M
                 </button>
                 <button
                     onClick={() => setViewPeriod(255)}

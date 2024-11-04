@@ -64,13 +64,13 @@ function formatMarketCap_kr(number,front = '', back = ''){
 }
 /**
  * 
- * @param {Number} number 
+ * @param {Number|string} number 
  * @param {string} front 
  * @param {string} back 
  * @returns 
  */
 function formatNumberComma(number,front='',back=''){
-    return `${front} ${number.toLocaleString('en-us')} ${back}`
+    return `${front} ${Number(number).toLocaleString('en-us')} ${back}`
 }
 
 export { formatNumberLong, formatNumberShort, formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr, formatNumberComma }

@@ -11,7 +11,7 @@ export function generateMetadata({params:{id}}){
         title: `${symbolsData[symbol].stock_name}`
     })
 }
-const StockPage = async ({params:{id}}) => {
+const StockPage = async ({params:{id, market}}) => {
     const symbol = decodeURIComponent(id)
     const stock_name = symbolsData[symbol].stock_name
     const { price_data, volume_data } = await chartPrice_daily(symbol,1825)
@@ -19,7 +19,7 @@ const StockPage = async ({params:{id}}) => {
     return (
         <div className={styles.container}>
             <div className={styles.item}>
-                <PriceChart chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
+                <PriceChart market={market} chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
             </div>
             <div className={styles.item}>
                 <StockInfo data={info_data} />
