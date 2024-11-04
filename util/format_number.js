@@ -62,5 +62,15 @@ function formatMarketCap_kr(number,front = '', back = ''){
     if (number >= 1e8) number_short = `${(number / 1e8).toFixed(2)}경`;   // 억
 	return `${front} ${number_short} ${back}`;
 }
+/**
+ * 
+ * @param {Number} number 
+ * @param {string} front 
+ * @param {string} back 
+ * @returns 
+ */
+function formatNumberComma(number,front='',back=''){
+    return `${front} ${number.toLocaleString('en-us')} ${back}`
+}
 
-export { formatNumberLong, formatNumberShort, formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr }
+export { formatNumberLong, formatNumberShort, formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr, formatNumberComma }

@@ -1,5 +1,5 @@
 "use client"
-export default function IndexChart_legend({ chartTitle, cursorData }) {
+export default function IndexChartLegend({ chartTitle, cursorData }) {
     //console.log(chartTitle)
     return (
         <div className="absolute left-4 z-10 bg-white p-4 rounded-lg shadow-lg opacity-90">

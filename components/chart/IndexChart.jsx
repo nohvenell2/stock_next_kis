@@ -4,7 +4,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { modTime } from '@/util/format_time';
-import IndexChart_legend from './IndexChart_legend';
+import IndexChartLegend from './IndexChart_legend';
 
 const IndexChart = ({ chartTitle, data_index }) => {
     const chartContainerRef = useRef();
@@ -83,7 +83,7 @@ const IndexChart = ({ chartTitle, data_index }) => {
         <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             { data_index?
                 <div ref={chartContainerRef} className="w-full relative" >
-                    <IndexChart_legend chartTitle={chartTitle} cursorData={cursorData}/>
+                    <IndexChartLegend chartTitle={chartTitle} cursorData={cursorData}/>
                 </div>
                 :
                 <></>
