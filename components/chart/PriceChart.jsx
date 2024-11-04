@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import PriceChartLegend from './PriceChart_legend';
 import { modTime } from '@/util/format_time';
-import { formatBigNumber_kr, formatNumberComma } from '@/util/format_number';
+import { formatBigNumber_kr, formatFloatInt, formatNumberComma } from '@/util/format_number';
 
 const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     const chartContainerRef = useRef();
@@ -20,13 +20,12 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     function time_formatter_ko(time){ return modTime(time); }
     // 차트 y축 가격 포멧 변경
     function price_formatter(price){
-        const price_str = price.toFixed(2);
-        const price_convert = price_str.endsWith(".00") ? parseInt(price_str) : price_str
-        return `${currency_symbol}${formatNumberComma(price_convert)}`
+        const price_number = formatFloatInt(price,2)
+        return `${formatNumberComma(price_number,currency_symbol)}`
     }
     // 차트 y축 거래량 포멧 변경
     function volume_formatter(volume){
-        return formatBigNumber_kr(volume,'','주')
+        return formatBigNumber_kr(volume,'',' 주')
     }
     useEffect(() => {
         const chart = createChart(chartContainerRef.current, {
@@ -119,7 +118,7 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
         const handleResize = () => {
             chart.applyOptions({
                 width: chartContainerRef.current.clientWidth,
-                height: chartContainerRef.current.clientHeight,
+                height: chartContainerRef.current.clientWidth * 0.4,
             });
         };
         window.addEventListener('resize', handleResize);
@@ -184,7 +183,7 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
                 >
                     Line
                 </button>
-                <span>|</span>
+                <span className='ml-5 mr-5'> |</span>
                 <button
                     onClick={() => setViewPeriod(24)}
                     style={{

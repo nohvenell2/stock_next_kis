@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 import { modTime } from '@/util/format_time';
 import IndexChartLegend from './IndexChart_legend';
+import { formatFloatInt,formatNumberComma } from '@/util/format_number';
 
 const IndexChart = ({ chartTitle, data_index }) => {
     const chartContainerRef = useRef();
@@ -40,13 +41,17 @@ const IndexChart = ({ chartTitle, data_index }) => {
             });
 
             // 캔들스틱 시리즈 설정
-            const areaSeries = chart.addLineSeries({
+            const lineSeries = chart.addLineSeries({
                 lineColor:'#2962FF',
-                lineWidth:2
+                lineWidth:2,
+                priceFormat:{
+                    type:'custom',
+                    formatter:(v)=>formatNumberComma(formatFloatInt(v,2))
+                }
             });
 
             // 데이터 설정
-            areaSeries.setData(data_index);
+            lineSeries.setData(data_index);
 
             const recentPeriodStart = data_index[data_index.length - 365]?.time || data_index[0]?.time; // 최근 n일 기준
             const recentPeriodEnd = data_index[data_index.length - 1]?.time;
@@ -56,7 +61,7 @@ const IndexChart = ({ chartTitle, data_index }) => {
             });
             chart.subscribeCrosshairMove((param) => {
                 if (param.time) {
-                    const data = param.seriesData.get(areaSeries)
+                    const data = param.seriesData.get(lineSeries)
                     setCursorData(data)
                 }
             })

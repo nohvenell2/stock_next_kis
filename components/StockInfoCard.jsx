@@ -58,7 +58,7 @@ const StockInfo = ( { data } ) => {
                 {/* 거래량 / 거래액 */}
 				<div>
 					<p className="font-semibold">거래량</p>
-					<p>{formatBigNumber_kr(volume,'','주')}</p>
+					<p>{formatBigNumber_kr(volume,'',' 주')}</p>
 				</div>
 				<div>
 					<p className="font-semibold">거래액</p>
