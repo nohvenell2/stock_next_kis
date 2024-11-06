@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useRef, useState } from 'react';
-import { createChart } from 'lightweight-charts';
+import { createChart, LineStyle } from 'lightweight-charts';
 import PriceChartLegend from './PriceChart_legend';
 import { modTime } from '@/util/format_time';
 import { formatBigNumber_kr, formatFloatInt, formatNumberComma } from '@/util/format_number';
@@ -50,10 +50,20 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
             },
             rightPriceScale: {
                 borderColor: '#D1D4DC',
-
             },
             localization: {
                 timeFormatter: time_formatter_ko,
+            },
+            crosshair:{
+                vertLine: {
+                    width: 5,
+                    color: '#C3BCDB44',
+                    style: LineStyle.Solid,
+                    labelBackgroundColor: '#494949',
+                },
+                horzLine: {
+                    labelBackgroundColor: '#494949',
+                }
             },
         });
         // chart 의 ref
@@ -69,7 +79,8 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
             priceFormat: {
                 type:'custom',
                 formatter:price_formatter
-            }
+            },
+            //priceLineColor:'blue'
         });
         candlestickSeries.setData(data_ohlc);
         candlestickSeries.priceScale().applyOptions({

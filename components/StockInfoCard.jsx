@@ -30,7 +30,7 @@ const StockInfo = ( { data } ) => {
 					{stock_name} <span className="text-gray-500">[{symbol}]</span>
 				</h2>
 				<p className={change > 0 ? 'text-red-500':'text-blue-700'}>
-					{change > 0 ? `+ ${change} $ ( ${rate}% )` : `${change}${currency_symbol} ( ${rate}% )`}
+					{change >= 0 ? `+ ${change}${currency_symbol}  ( ${rate}% )` : `- ${change}${currency_symbol} ( ${rate}% )`}
 				</p>
 			</div>
 
