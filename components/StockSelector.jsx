@@ -17,7 +17,7 @@ function StockSelector({ symbols, symbolsData, market }){
     const handleChange = (e) => {
         if (!e?.value) return
         const value = e.value
-        const stock_url = base_url + value
+        const stock_url = base_url + encodeURIComponent(value)
         setSelectedOption(null)
         router.push(stock_url)
     };

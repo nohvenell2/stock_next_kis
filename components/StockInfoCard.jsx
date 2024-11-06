@@ -1,4 +1,4 @@
-import { formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr } from "@/util/format_number";
+import { formatBigNumber_en, formatBigNumber_kr, formatMarketCap_kr, formatNumberComma } from "@/util/format_number";
 import React from "react";
 const StockInfo = ( { data } ) => {
     if (!data) return <></>
@@ -19,9 +19,9 @@ const StockInfo = ( { data } ) => {
         open,
 		currency
 	} = data;
-	const currency_symbols = {'KRW':'₩','USD':'$'}[currency]
-	const bignumber_function = {'KRW':formatBigNumber_kr,'USD':formatBigNumber_en}[currency]
-	const marketcap_function = {'KRW':formatMarketCap_kr,'USD':formatBigNumber_en}[currency]
+	const currency_symbol = {'KRW':'₩','USD':'$'}[currency]
+	const bignumber_function = {'KRW':formatBigNumber_kr,'USD':formatBigNumber_kr}[currency]
+	const marketcap_function = {'KRW':formatMarketCap_kr,'USD':formatBigNumber_kr}[currency]
 	return (
 		<div className="p-4 bg-white rounded-lg shadow-md max-w-sm">
 			{/* 주식 이름 및 코드 */}
@@ -30,7 +30,7 @@ const StockInfo = ( { data } ) => {
 					{stock_name} <span className="text-gray-500">[{symbol}]</span>
 				</h2>
 				<p className={change > 0 ? 'text-red-500':'text-blue-700'}>
-					{change > 0 ? `+ ${change} $ ( ${rate}% )` : `${change} $ ( ${rate}% )`}
+					{change >= 0 ? `+ ${change}${currency_symbol}  ( ${rate}% )` : `- ${change}${currency_symbol} ( ${rate}% )`}
 				</p>
 			</div>
 
@@ -49,25 +49,25 @@ const StockInfo = ( { data } ) => {
 				{/* 시가 / 종가 */}
 				<div>
 					<p className="font-semibold">시가</p>
-					<p>{bignumber_function(open,currency_symbols)}</p>
+					<p>{formatNumberComma(open,currency_symbol)}</p>
 				</div>
 				<div>
 					<p className="font-semibold">종가</p>
-					<p>{bignumber_function(close,currency_symbols)}</p>
+					<p>{formatNumberComma(close,currency_symbol)}</p>
 				</div>
                 {/* 거래량 / 거래액 */}
 				<div>
 					<p className="font-semibold">거래량</p>
-					<p>{formatBigNumber_kr(volume,'','주')}</p>
+					<p>{formatBigNumber_kr(volume,'',' 주')}</p>
 				</div>
 				<div>
 					<p className="font-semibold">거래액</p>
-					<p>{bignumber_function(amount,currency_symbols)}</p>
+					<p>{bignumber_function(amount,currency_symbol)}</p>
 				</div>
 				{/* 시가 총액 / PER */}
 				<div>
 					<p className="font-semibold">시가 총액</p>
-					<p>{marketcap_function(market_cap,currency_symbols)}</p>
+					<p>{marketcap_function(market_cap,currency_symbol)}</p>
 				</div>
 				<div>
 					<p className="font-semibold">PER</p>

@@ -2,9 +2,10 @@
 // See https://www.tradingview.com/ for more information.
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
-import { createChart } from 'lightweight-charts';
+import { createChart,LineStyle } from 'lightweight-charts';
 import { modTime } from '@/util/format_time';
-import IndexChart_legend from './IndexChart_legend';
+import IndexChartLegend from './IndexChart_legend';
+import { formatFloatInt,formatNumberComma } from '@/util/format_number';
 
 const IndexChart = ({ chartTitle, data_index }) => {
     const chartContainerRef = useRef();
@@ -35,21 +36,33 @@ const IndexChart = ({ chartTitle, data_index }) => {
                 },
                 localization:
                 {
-                    //todo timeFormatter: (time)=>{ date = new Date(time*1000) ...}
                     timeFormatter: time_formatter_ko
                 },
+                crosshair:{
+                    vertLine: {
+                        width: 8,
+                        color: '#C3BCDB44',
+                        labelBackgroundColor: '#494949',
+                        style: LineStyle.Solid
+                    },
+                    horzLine:{
+                        labelBackgroundColor: '#494949',
+                    }
+                }
             });
 
             // 캔들스틱 시리즈 설정
-            const areaSeries = chart.addAreaSeries({
+            const lineSeries = chart.addLineSeries({
                 lineColor:'#2962FF',
-                bottomColor: '#FFFFFF',
-                topColor:'#FFFFFF',
-                lineWidth:2
+                lineWidth:2,
+                priceFormat:{
+                    type:'custom',
+                    formatter:(v)=>formatNumberComma(formatFloatInt(v,2))
+                },
             });
 
             // 데이터 설정
-            areaSeries.setData(data_index);
+            lineSeries.setData(data_index);
 
             const recentPeriodStart = data_index[data_index.length - 365]?.time || data_index[0]?.time; // 최근 n일 기준
             const recentPeriodEnd = data_index[data_index.length - 1]?.time;
@@ -58,10 +71,9 @@ const IndexChart = ({ chartTitle, data_index }) => {
                 to: recentPeriodEnd,
             });
             chart.subscribeCrosshairMove((param) => {
-                if (param.time) {
-                    const data = param.seriesData.get(areaSeries)
-                    setCursorData(data)
-                }
+                if (!param?.time) return
+                const data = param.seriesData.get(lineSeries)
+                setCursorData(data)
             })
 
             // 차트 크기 조정 이벤트 리스너
@@ -83,7 +95,7 @@ const IndexChart = ({ chartTitle, data_index }) => {
         <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             { data_index?
                 <div ref={chartContainerRef} className="w-full relative" >
-                    <IndexChart_legend chartTitle={chartTitle} cursorData={cursorData}/>
+                    <IndexChartLegend chartTitle={chartTitle} cursorData={cursorData}/>
                 </div>
                 :
                 <></>

@@ -43,7 +43,7 @@ async function chartPrice_daily(symbol,period) {
     })
     const volume_data = data.map((d) => ({
         time: modTime(d.trade_date),
-        volume: Number(d.volume)
+        value: Number(d.volume)
     }));
     return { price_data, volume_data }
 }
