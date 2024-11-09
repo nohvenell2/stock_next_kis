@@ -1,0 +1,23 @@
+.container_ohlc{
+    display: flex;
+    align-items: center;
+    gap:0.5rem;
+    .date{
+        font-weight: bold;
+        font-size:1rem;
+        color:gray;
+    }
+    .ohlc_default{
+        display: flex;
+        align-items: center;
+        gap:2px;
+        .title{
+            font-size:1rem;
+            font-weight:600;
+        }
+        .price{
+            font-size:1rem;
+        }
+    
+    }
+}

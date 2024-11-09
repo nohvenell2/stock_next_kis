@@ -85,7 +85,7 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
         });
         candlestickSeries.setData(data_ohlc);
         candlestickSeries.priceScale().applyOptions({
-            scaleMargins: { top: 0.1, bottom: 0.3 },
+            scaleMargins: { top: 0.05, bottom: 0.3 },
         });
         candlestickSeriesRef.current = candlestickSeries; // 캔들스틱 차트 ref 
         // 거래량 차트 설정
@@ -161,7 +161,7 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     }, [viewPeroid])
 
     return (
-        <div className="w-ful max-w-6xl border border-gray-200 bg-slate-200 px-4 py-4 shadow-sm">
+        <div className="max-w-6xl w-screen border border-gray-200 shadow-sm">
             <div className="w-full">
                 <div className='flex items-center mb-2 gap-2'>
                     <ButtonDefault title='Line' indexState='Line' stateCurrent={chartType} handleClick={setChartType} />
@@ -174,8 +174,8 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
                 </div>
             </div>
 
+            <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData} />
             <div ref={chartContainerRef} className="w-full relative">
-                <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData} />
             </div>
 
         </div>

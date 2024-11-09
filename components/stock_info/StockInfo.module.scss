@@ -1,0 +1,37 @@
+.container{
+    display: grid;
+    grid-template-columns : repeat(auto-fit,minmax(150px,150px));
+    gap:30px;
+    row-gap:10px;
+    .info{
+        display:flex;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+        max-width: 150px;
+        .title{
+            font-weight: 700;
+            font-size: large;
+        }
+        .value{
+            font-size:large;
+        }
+        .tooltiptext{
+            visibility: hidden;       /* 이벤트가 없으면 툴팁 영역을 숨김 */
+            width: 100px;             /* 툴팁 영역의 넓이를 설정 */
+            background-color: #1E90FF;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            position: absolute;       /* 절대 위치를 사용 */
+            z-index: 1;
+            font-size:smaller;
+        }
+    }
+    .info:hover{
+        .tooltiptext{
+            visibility: visible;
+        }
+    }
+}

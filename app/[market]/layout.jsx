@@ -16,7 +16,9 @@ export default function MarketLayout({ children, params: { market } }) {
             <div className={styles.topbar}>
                 {market == 'kospi' ? <TopBar_kospi /> : market == 'snp500' ? <TopBar_snp500 /> : <></>}
             </div>
-            {children}
+            <div className="grid justify-items-center">
+                {children}
+            </div>
         </div>
     );
 }

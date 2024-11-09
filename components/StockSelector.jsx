@@ -50,6 +50,6 @@ const customStyles = {
         backgroundColor: state.isFocused ? 'lightblue' : 'white',
         color: 'black',
     }),
-    menuPortal: provided => ({ ...provided, zIndex: 5 }),
+    menuPortal: provided => ({ ...provided, zIndex: 15 }),
 };
 export default StockSelector;
