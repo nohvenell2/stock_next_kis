@@ -14,7 +14,7 @@ export default function RankCard({ market, title, data, value_color }){
                             </span>
                             <span className="text-gray-700">{d[1]}</span>
                         </span>
-                        <span className={valueColor+"font-medium"}>{d[2]}</span>
+                        <span className={valueColor+"font-medium ml-4"}>{d[2]}</span>
                     </Link>
                 </li>
             ))}

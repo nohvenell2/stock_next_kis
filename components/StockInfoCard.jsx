@@ -23,7 +23,7 @@ const StockInfo = ( { data } ) => {
 	const bignumber_function = {'KRW':formatBigNumber_kr,'USD':formatBigNumber_kr}[currency]
 	const marketcap_function = {'KRW':formatMarketCap_kr,'USD':formatBigNumber_kr}[currency]
 	return (
-		<div className="p-4 bg-white rounded-lg shadow-md max-w-sm">
+		<div className="p-4 bg-white rounded-lg shadow-md max-w-sm m-2">
 			{/* 주식 이름 및 코드 */}
 			<div className="mb-4">
 				<h2 className="text-xl font-bold">

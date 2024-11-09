@@ -4,7 +4,8 @@ import { createChart, LineStyle } from 'lightweight-charts';
 import PriceChartLegend from './PriceChart_legend';
 import { modTime } from '@/util/format_time';
 import { formatBigNumber_kr, formatFloatInt, formatNumberComma } from '@/util/format_number';
-
+import ButtonDefault from './button/ButtonDefault';
+import StockTitle from '../stock_title/StockTitle';
 const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     const chartContainerRef = useRef();
     const chartRef = useRef();
@@ -15,17 +16,17 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     const [cursorData, setCursorData] = useState(null);
     const [chartType, setChartType] = useState('Candle');
     // 화폐 단위
-    const currency_symbol = { 'kospi': '₩', 'snp500' : '$' }?.[market]
+    const currency_symbol = { 'kospi': '₩', 'snp500': '$' }?.[market]
     // 차트 x축 시간 포멧 변경
-    function time_formatter_ko(time){ return modTime(time); }
+    function time_formatter_ko(time) { return modTime(time); }
     // 차트 y축 가격 포멧 변경
-    function price_formatter(price){
-        const price_number = formatFloatInt(price,2)
-        return `${formatNumberComma(price_number,currency_symbol)}`
+    function price_formatter(price) {
+        const price_number = formatFloatInt(price, 2)
+        return `${formatNumberComma(price_number, currency_symbol)}`
     }
     // 차트 y축 거래량 포멧 변경
-    function volume_formatter(volume){
-        return formatBigNumber_kr(volume,'',' 주')
+    function volume_formatter(volume) {
+        return formatBigNumber_kr(volume, '', ' 주')
     }
     useEffect(() => {
         const chart = createChart(chartContainerRef.current, {
@@ -54,7 +55,7 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
             localization: {
                 timeFormatter: time_formatter_ko,
             },
-            crosshair:{
+            crosshair: {
                 vertLine: {
                     width: 5,
                     color: '#C3BCDB44',
@@ -77,8 +78,8 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
             wickDownColor: 'blue',
             priceScaleId: 'right',
             priceFormat: {
-                type:'custom',
-                formatter:price_formatter
+                type: 'custom',
+                formatter: price_formatter
             },
             //priceLineColor:'blue'
         });
@@ -92,7 +93,7 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
             color: '#26a69a',
             priceScaleId: 'volume',
             visible: true,
-            priceFormat: { 
+            priceFormat: {
                 type: 'custom',
                 formatter: volume_formatter
             },
@@ -160,98 +161,23 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     }, [viewPeroid])
 
     return (
-        <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
-            {/* <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData}/> */}
+        <div className="w-ful max-w-6xl border border-gray-200 bg-slate-200 px-4 py-4 shadow-sm">
+            <div className="w-full">
+                <div className='flex items-center mb-2 gap-2'>
+                    <ButtonDefault title='Line' indexState='Line' stateCurrent={chartType} handleClick={setChartType} />
+                    <ButtonDefault title='Candle' indexState='Candle' stateCurrent={chartType} handleClick={setChartType} />
+                    <span className='mx-5'> |</span>
+                    <ButtonDefault title='1M' indexState={24} stateCurrent={viewPeroid} handleClick={setViewPeriod} />
+                    <ButtonDefault title='3M' indexState={66} stateCurrent={viewPeroid} handleClick={setViewPeriod} />
+                    <ButtonDefault title='1y' indexState={225} stateCurrent={viewPeroid} handleClick={setViewPeriod} />
+                    <ButtonDefault title='3y' indexState={765} stateCurrent={viewPeroid} handleClick={setViewPeriod} />
+                </div>
+            </div>
+
             <div ref={chartContainerRef} className="w-full relative">
                 <PriceChartLegend chartTitle={chartTitle} cursorData={cursorData} />
             </div>
-            <div>
-                <button
-                    onClick={() => setChartType('Candle')}
-                    style={{
-                        backgroundColor: chartType === 'Candle' ? '#2962FF' : '#f0f0f0',
-                        color: chartType === 'Candle' ? '#ffffff' : '#333333',
-                        border: 'none',
-                        padding: '8px 16px',
-                        margin: '0 4px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Candle
-                </button>
-                <button
-                    onClick={() => setChartType('Line')}
-                    style={{
-                        backgroundColor: chartType === 'Line' ? '#2962FF' : '#f0f0f0',
-                        color: chartType === 'Line' ? '#ffffff' : '#333333',
-                        border: 'none',
-                        padding: '8px 16px',
-                        margin: '0 4px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    Line
-                </button>
-                <span className='ml-5 mr-5'> |</span>
-                <button
-                    onClick={() => setViewPeriod(24)}
-                    style={{
-                        backgroundColor: viewPeroid === 24 ? '#2962FF' : '#f0f0f0',
-                        color: viewPeroid === 24 ? '#ffffff' : '#333333',
-                        border: 'none',
-                        padding: '8px 16px',
-                        margin: '0 4px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    1M
-                </button>
-                <button
-                    onClick={() => setViewPeriod(66)}
-                    style={{
-                        backgroundColor: viewPeroid === 66 ? '#2962FF' : '#f0f0f0',
-                        color: viewPeroid === 66 ? '#ffffff' : '#333333',
-                        border: 'none',
-                        padding: '8px 16px',
-                        margin: '0 4px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    3M
-                </button>
-                <button
-                    onClick={() => setViewPeriod(255)}
-                    style={{
-                        backgroundColor: viewPeroid === 255 ? '#2962FF' : '#f0f0f0',
-                        color: viewPeroid === 255 ? '#ffffff' : '#333333',
-                        border: 'none',
-                        padding: '8px 16px',
-                        margin: '0 4px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    1y
-                </button>
-                <button
-                    onClick={() => setViewPeriod(765)}
-                    style={{
-                        backgroundColor: viewPeroid === 765 ? '#2962FF' : '#f0f0f0',
-                        color: viewPeroid === 765 ? '#ffffff' : '#333333',
-                        border: 'none',
-                        padding: '8px 16px',
-                        margin: '0 4px',
-                        borderRadius: '4px',
-                        cursor: 'pointer',
-                    }}
-                >
-                    3y
-                </button>
-            </div>
+
         </div>
     );
 };

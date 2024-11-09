@@ -4,7 +4,8 @@ import { symbolsData } from "@/util/db/fetch_symbols.js";
 import { chartPrice_daily } from "@/util/chartdata_price_daily.js";
 import { chartData_info } from "@/util/chartdata_info.js";
 import StockInfo from "@/components/StockInfoCard";
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
+import StockTitle from "@/components/stock_title/StockTitle";
 export function generateMetadata({params:{id}}){
     const symbol = decodeURIComponent(id)
     return ({
@@ -18,12 +19,15 @@ const StockPage = async ({params:{id, market}}) => {
     const info_data = await chartData_info(symbol)
     return (
         <div className={styles.container}>
-            <div className={styles.item}>
+            <div className={styles.title}>
+                <StockTitle data={info_data} />
+            </div>
+            <div className={styles.chart}>
                 <PriceChart market={market} chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
             </div>
-            <div className={styles.item}>
+{/*             <div className={styles.item}>
                 <StockInfo data={info_data} />
-            </div>
+            </div> */}
         </div>
     );
 };

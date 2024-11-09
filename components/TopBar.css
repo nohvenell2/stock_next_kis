@@ -1,7 +1,5 @@
 /* 전체 탑바 스타일 */
 .top-bar {
-	position: fixed;
-	top: 0;
 	width: 100%;
 	background-color: #282c34;
 	color: white;
@@ -10,7 +8,6 @@
 	align-items: center;
 	padding: 10px 20px;
 	box-shadow: 0 4px 2px -2px gray;
-	z-index: 1000;
 }
 
 /* 비율 설정 (1:6:1) */
