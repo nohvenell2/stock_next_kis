@@ -18,15 +18,16 @@
         }
         .tooltiptext{
             visibility: hidden;       /* 이벤트가 없으면 툴팁 영역을 숨김 */
-            width: 100px;             /* 툴팁 영역의 넓이를 설정 */
+            //width: 130px;             /* 툴팁 영역의 넓이를 설정 */
             background-color: #1E90FF;
             color: #fff;
             text-align: center;
             border-radius: 6px;
-            padding: 5px 0;
+            padding: 5px 5px;
             position: absolute;       /* 절대 위치를 사용 */
             z-index: 1;
             font-size:smaller;
+            top:50px;
         }
     }
     .info:hover{

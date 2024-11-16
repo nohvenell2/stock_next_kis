@@ -32,49 +32,37 @@ export default function StockInfo({ data }) {
             <div className={styles.info}>
                 <div className={styles.title}>52주 최고가</div>
                 <div className={styles.value}>{`${currency_symbol}${Number(week52_high).toLocaleString()}`}</div>
-                <div className={styles.tooltip}>
-                    <div className={styles.tooltiptext}>{week52_high_date_short}</div>
-                </div>
+                <div className={styles.tooltiptext}>{week52_high_date_short}</div>
             </div>
             {/* week52 low*/}
             <div className={styles.info}>
                 <div className={styles.title}>52주 최저가</div>
                 <div className={styles.value}>{`${currency_symbol}${Number(week52_low).toLocaleString()}`}</div>
-                <div className={styles.tooltip}>
-                    <div className={styles.tooltiptext}>{week52_low_date_short}</div>
-                </div>
+                <div className={styles.tooltiptext}>{week52_low_date_short}</div>
             </div>
             {/* eps */}
             <div className={styles.info}>
                 <div className={styles.title}>EPS</div>
                 <div className={styles.value}>{Number(eps).toLocaleString()}</div>
-                <div className={styles.tooltip}>
-                    <div className={styles.tooltiptext}>주당순이익</div>
-                </div>
+                <div className={styles.tooltiptext}>주당순이익</div>
             </div>
             {/* bps */}
             <div className={styles.info}>
                 <div className={styles.title}>BPS</div>
                 <div className={styles.value}>{Number(bps).toLocaleString()}</div>
-                <div className={styles.tooltip}>
-                    <div className={styles.tooltiptext}>주당순자산가치</div>
-                </div>
+                <div className={styles.tooltiptext}>주당순자산가치</div>
             </div>
             {/* per */}
             <div className={styles.info}>
                 <div className={styles.title}>PER</div>
                 <div className={styles.value}>{Number(per).toLocaleString()}</div>
-                <div className={styles.tooltip}>
-                    <div className={styles.tooltiptext}>주가수익비율</div>
-                </div>
+                <div className={styles.tooltiptext}>주가수익비율</div>
             </div>
             {/* pbr */}
             <div className={styles.info}>
                 <div className={styles.title}>PBR</div>
                 <div className={styles.value}>{Number(pbr).toLocaleString()}</div>
-                <div className={styles.tooltip}>
-                    <div className={styles.tooltiptext}>주가순자산비율</div>
-                </div>
+                <div className={styles.tooltiptext}>주가순자산비율</div>
             </div>
         </div>
     )
