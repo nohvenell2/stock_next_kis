@@ -2,6 +2,7 @@
 import { useFavoriteStocks } from "@/hooks/useFavoriteStocks"
 import styles from "./FavoriteList.module.scss"
 import Link from "next/link"
+import FavoriteButton_delete from "./favoriteButton/FavoriteButton_delete"
 export default function FavoriteList() {
     const { favorites, isLoading } = useFavoriteStocks()
 
@@ -17,9 +18,12 @@ export default function FavoriteList() {
                     if (market == 'KRX') { base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_KOSPI_URL}/` }
                     else { base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_SNP500_URL}/` }
                     return (
-                        <Link className={styles.favoriteList__item} key={i} href={base_url + code}>
-                            <div>{`${name}`}</div>
-                        </Link>
+                        <div className={styles.favoriteList__item} key={i}>
+                            <Link className={styles.favoriteList__item__Link} key={i} href={base_url + code}>
+                                <div>{`${name}`}</div>
+                            </Link>
+                            <FavoriteButton_delete symbol={code} stock_name={name} market={market}/>
+                        </div>
                     )
                 })}
             </ul>

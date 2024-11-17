@@ -31,10 +31,16 @@
         .favoriteList__item{
             width: 100%;
             transition: all 0.2s;
-            padding:15px 15px;
+            display: grid;
+            grid-template-columns: 9fr 1fr;
+            padding-right: 15px;
             &:hover{
                 background-color: white;
                 color: black;
+            }
+            .favoriteList__item__Link{
+                padding:15px 15px;
+                height: 100%;
             }
         }
     }

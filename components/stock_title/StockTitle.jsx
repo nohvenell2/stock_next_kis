@@ -1,4 +1,4 @@
-import FavoriteButton from './favoriteButton/FavoriteButton'
+import FavoriteButton from '@/components/favoriteButton/FavoriteButton'
 import styles from './StockTitle.module.scss'
 export default function StockTitle({data}){
     const {symbol, market, price, stock_name, change, rate, currency} = data
