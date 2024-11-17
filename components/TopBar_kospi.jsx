@@ -2,7 +2,8 @@ import './TopBar.css';
 import StockSelector from './StockSelector';
 import Link from 'next/link';
 import { kospi_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
-function TopBar_kospi(){
+import FavoriteList from './FavoriteList';
+function TopBar_kospi() {
 	//RENDER
 	return (
 		<div className="top-bar">
@@ -20,13 +21,14 @@ function TopBar_kospi(){
 			{/* SELECTOR */}
 			<div className="search">
 				<div className="stock-selector-wrapper">
-                    <StockSelector symbols={kospi_symbols} symbolsData={symbolsData} market='kospi'/> 
-                </div>
+					<StockSelector symbols={kospi_symbols} symbolsData={symbolsData} market='kospi' />
+				</div>
 			</div>
-			<div className='buttons'></div>
+			<div className='favorites'>
+				<FavoriteList />
+			</div>
 		</div>
 	);
 };
-
 export default TopBar_kospi;
 
