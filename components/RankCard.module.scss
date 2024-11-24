@@ -1,0 +1,99 @@
+.container {
+    background: linear-gradient(145deg, #ffffff, #f5f5f5);
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.05),
+        0 1px 3px rgba(0, 0, 0, 0.03);
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+
+    &:hover {
+        background: linear-gradient(145deg, #f8f9fa, #f1f3f5);
+    }
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #111827;
+    letter-spacing: -0.025em;
+    position: relative;
+    padding-bottom: 0.75rem;
+
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 2.5rem;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+        border-radius: 2px;
+    }
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.listItem {
+    a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.3rem 0.75rem;
+        border-radius: 0.875rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.03);
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(59, 130, 246, 0.1);
+            transform: translateX(4px);
+        }
+    }
+}
+
+.rank {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.rankNumber {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    color: white;
+    border-radius: 0.75rem;
+    font-size: 0.925rem;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(59, 130, 246, 0.2);
+}
+
+.name {
+    color: #1f2937;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.value {
+    font-weight: 600;
+    margin-left: 1.25rem;
+    font-size: 1rem;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 1;
+    }
+}

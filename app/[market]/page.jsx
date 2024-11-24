@@ -31,8 +31,8 @@ export default async function Page({ params: { market } }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md">
                     <RankCard market={market} title="시가총액 순위" data={capitalRank} />
                     <RankCard market={market} title="거래 순위" data={volumeRank} />
-                    <RankCard market={market} title="상승률 순위" data={increaseRateRank} value_color={"text-red-600 "} />
-                    <RankCard market={market} title="하락률 순위" data={decreaseRateRank} value_color={"text-blue-600 "} />
+                    <RankCard market={market} title="상승률 순위" data={increaseRateRank} value_color={"#DC2626"} />
+                    <RankCard market={market} title="하락률 순위" data={decreaseRateRank} value_color={"#2563EB"} />
                 </div>
             </div>
         </div>
