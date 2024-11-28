@@ -219,7 +219,7 @@ export const useMockStorage = () => {
      * @param {string} stockCode - 종목 코드
      * @param {string} stockName - 종목 이름
      * @param {number} quantity - 매수 수량
-     * @returns {Promise<{success: boolean, trade?: TradeHistory}>} 매수 성공 여부와 거래 정보
+     * @returns {Promise<{success: boolean, trade?: TradeHistory, balance?: number}>} 매수 성공 여부와 거래 정보
      */
     const buyStock = useCallback(async (stockCode, stockName, quantity) => {
         // 현재가 조회
@@ -319,7 +319,7 @@ export const useMockStorage = () => {
         localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(updatedTradeHistory));
 
         notifyStorageChange();
-        return { success: true, trade: newTrade };
+        return { success: true, trade: newTrade, balance: updatedAccount.balance };
     }, [accountInfo, portfolio, tradeHistory, calculateTotalValue, notifyStorageChange]);
 
     /**
@@ -327,7 +327,7 @@ export const useMockStorage = () => {
      * @param {string} stockCode - 종목 코드
      * @param {string} stockName - 종목 이름
      * @param {number} quantity - 매도 수량
-     * @returns {Promise<{success: boolean, trade?: TradeHistory}>} 매도 성공 여부와 거래 정보
+     * @returns {Promise<{success: boolean, trade?: TradeHistory, balance?: number}>} 매도 성공 여부와 거래 정보
      */
     const sellStock = useCallback(async (stockCode, stockName, quantity) => {
         const existingStock = portfolio.find(item => item.stockCode === stockCode);
@@ -413,7 +413,7 @@ export const useMockStorage = () => {
         localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(updatedTradeHistory));
 
         notifyStorageChange();
-        return { success: true, trade: newTrade };
+        return { success: true, trade: newTrade, balance: updatedAccount.balance };
     }, [accountInfo, portfolio, tradeHistory, calculateTotalValue, notifyStorageChange]);
 
     /**

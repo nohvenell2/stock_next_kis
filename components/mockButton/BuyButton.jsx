@@ -37,13 +37,13 @@ export default function BuyButton({ stockCode, stockName }) {
 
         if (result.isConfirmed) {
             const quantity = result.value;
-            const { success, trade } = await buyStock(stockCode, stockName, quantity);
+            const { success, trade, balance } = await buyStock(stockCode, stockName, quantity);
             
             if (success && trade) {
                 Swal.fire({
                     icon: 'success',
                     title: '매수 완료',
-                    text: `${stockName} ${quantity}주, 총 ${trade.total}원이 매수되었습니다.`,
+                    html: `${stockName} ${quantity}주, 총 ${trade.total}원이 매수되었습니다. <br>잔액: ${balance}원`,
                     timer: 10000
                 });
             }
