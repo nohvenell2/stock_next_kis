@@ -1,5 +1,7 @@
+'use client'
 import { useState, useCallback, useEffect } from 'react';
 import { AccountInfo, PortfolioItem, TradeHistory } from './types';
+import Swal from 'sweetalert2';
 /**
  * 포트폴리오 현재가 업데이트 및 수익률 계산
  * @param {PortfolioItem[]} portfolio - 포트폴리오 배열
@@ -26,7 +28,7 @@ async function updatePortfolioPrices(portfolio) {
                 marketValue,
                 unrealizedProfit,
                 profitRate,
-                lastUpdate: new Date().toISOString()
+                lastUpdate: getKSTString()
             };
         });
     } catch (error) {
@@ -34,14 +36,20 @@ async function updatePortfolioPrices(portfolio) {
         return portfolio;
     }
 }
+const getKSTString = () => {
+    const now = new Date();
+    const kstDate = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+    return kstDate.toISOString();
+};
 /**
  * 업데이트 시간 체크
  * @param {Date} now - 현재 시간
  * @returns {boolean} 업데이트 필요 여부
  */
 const isUpdateTime = (now) => {
-    const hour = now.getHours();
-    const minute = now.getMinutes();
+    const kstDate = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+    const hour = kstDate.getHours();
+    const minute = kstDate.getMinutes();
     
     // 평일 체크
     if (now.getDay() === 0 ) return false;
@@ -74,6 +82,13 @@ const fetchCurrentPrice = async (stockCode) => {
         return null;
     }
 };
+// 이벤트 정의
+const MOCK_STORAGE_CHANGE_EVENT = 'mockStorageChanged';
+const STORAGE_KEYS = {
+    ACCOUNT: 'stockAccount',
+    PORTFOLIO: 'stockPortfolio',
+    HISTORY: 'stockTradeHistory'
+};
 /**
  * 주식 모의투자 데이터를 관리하는 커스텀 훅
  * @returns {{
@@ -95,6 +110,12 @@ export const useMockStorage = () => {
         unrealizedProfit: 0,
         profitRate: 0
     });
+    const [isLoading, setIsLoading] = useState(true);
+
+    // 변경사항을 다른 컴포넌트에 알리는 ���수
+    const notifyStorageChange = useCallback(() => {
+        window.dispatchEvent(new Event(MOCK_STORAGE_CHANGE_EVENT));
+    }, []);
 
     /**
      * 초기 데이터 생성
@@ -104,7 +125,7 @@ export const useMockStorage = () => {
         const newAccount = {
             balance: initialBalance,
             initialBalance,
-            lastUpdate: new Date().toISOString()
+            lastUpdate: getKSTString()
         };
 
         localStorage.setItem('stockAccount', JSON.stringify(newAccount));
@@ -120,17 +141,37 @@ export const useMockStorage = () => {
      * 저장된 데이터 로드
      */
     const loadStoredData = useCallback(() => {
-        const storedAccount = localStorage.getItem('stockAccount');
-        const storedPortfolio = localStorage.getItem('stockPortfolio');
-        const storedHistory = localStorage.getItem('stockTradeHistory');
+        try {
+            const storedAccount = localStorage.getItem(STORAGE_KEYS.ACCOUNT);
+            const storedPortfolio = localStorage.getItem(STORAGE_KEYS.PORTFOLIO);
+            const storedHistory = localStorage.getItem(STORAGE_KEYS.HISTORY);
 
-        if (storedAccount) setAccountInfo(JSON.parse(storedAccount));
-        if (storedPortfolio) setPortfolio(JSON.parse(storedPortfolio));
-        if (storedHistory) setTradeHistory(JSON.parse(storedHistory));
+            if (storedAccount) setAccountInfo(JSON.parse(storedAccount));
+            if (storedPortfolio) {
+                const portfolioData = JSON.parse(storedPortfolio);
+                setPortfolio(portfolioData);
+                calculateTotalValue(portfolioData);
+            }
+            if (storedHistory) setTradeHistory(JSON.parse(storedHistory));
+        } catch (error) {
+            console.error('Failed to load stored data:', error);
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
+    // 초기 로딩과 이벤트 리스너 설정
     useEffect(() => {
+        const handleStorageChange = () => {
+            loadStoredData();
+        };
+
         loadStoredData();
+        window.addEventListener(MOCK_STORAGE_CHANGE_EVENT, handleStorageChange);
+
+        return () => {
+            window.removeEventListener(MOCK_STORAGE_CHANGE_EVENT, handleStorageChange);
+        };
     }, [loadStoredData]);
 
     // 포트폴리오 총 가치 계산
@@ -178,22 +219,32 @@ export const useMockStorage = () => {
      * @param {string} stockCode - 종목 코드
      * @param {string} stockName - 종목 이름
      * @param {number} quantity - 매수 수량
-     * @returns {Promise<boolean>} 매수 성공 여부
+     * @returns {Promise<{success: boolean, trade?: TradeHistory}>} 매수 성공 여부와 거래 정보
      */
     const buyStock = useCallback(async (stockCode, stockName, quantity) => {
         // 현재가 조회
         const currentPrice = await fetchCurrentPrice(stockCode);
         if (!currentPrice) {
-            alert('현재가 조회에 실패했습니다.');
-            return false;
+            await Swal.fire({
+                icon: 'error',
+                title: '현재가 조회 실패',
+                text: '현재가 조회에 실패했습니다.',
+                timer: 5000
+            });
+            return { success: false };
         }
 
         const totalAmount = quantity * currentPrice;
 
         // 잔액 확인
         if (!accountInfo || accountInfo.balance < totalAmount) {
-            alert('잔액이 부족합니다.');
-            return false;
+            await Swal.fire({
+                icon: 'error',
+                title: '잔액 부족',
+                text: '주문 금액이 계좌 잔액보다 큽니다.',
+                timer: 5000
+            });
+            return { success: false };
         }
 
         // 포트폴리오 업데이트
@@ -215,7 +266,7 @@ export const useMockStorage = () => {
                         marketValue: newTotalQuantity * currentPrice,
                         unrealizedProfit: (newTotalQuantity * currentPrice) - (newTotalQuantity * newAvgPrice),
                         profitRate: ((currentPrice - newAvgPrice) / newAvgPrice) * 100,
-                        lastUpdate: new Date().toISOString()
+                        lastUpdate: getKSTString()
                     }
                     : item
             );
@@ -229,7 +280,7 @@ export const useMockStorage = () => {
                 marketValue: quantity * currentPrice,
                 unrealizedProfit: 0,
                 profitRate: 0,
-                lastUpdate: new Date().toISOString()
+                lastUpdate: getKSTString()
             };
             updatedPortfolio = [...portfolio, newStock];
         }
@@ -242,7 +293,7 @@ export const useMockStorage = () => {
             stockName,
             quantity,
             price: currentPrice,
-            timestamp: new Date().toISOString(),
+            timestamp: getKSTString(),
             total: totalAmount
         };
 
@@ -250,44 +301,58 @@ export const useMockStorage = () => {
         const updatedAccount = {
             ...accountInfo,
             balance: accountInfo.balance - totalAmount,
-            lastUpdate: new Date().toISOString()
+            lastUpdate: getKSTString()
         };
 
-        // 한 번에 모든 상태 업데이트
+        // 거래 내역 배열 생성
+        const updatedTradeHistory = [...tradeHistory, newTrade];
+
+        // 상태 업데이트
         setAccountInfo(updatedAccount);
         setPortfolio(updatedPortfolio);
-        setTradeHistory(prev => [...prev, newTrade]);
+        setTradeHistory(updatedTradeHistory);
         calculateTotalValue(updatedPortfolio);
 
         // 로컬스토리지 업데이트
-        localStorage.setItem('stockAccount', JSON.stringify(updatedAccount));
-        localStorage.setItem('stockPortfolio', JSON.stringify(updatedPortfolio));
-        localStorage.setItem('stockTradeHistory', JSON.stringify([...tradeHistory, newTrade]));
+        localStorage.setItem(STORAGE_KEYS.ACCOUNT, JSON.stringify(updatedAccount));
+        localStorage.setItem(STORAGE_KEYS.PORTFOLIO, JSON.stringify(updatedPortfolio));
+        localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(updatedTradeHistory));
 
-        return true;
-    }, [accountInfo, portfolio, tradeHistory, calculateTotalValue]);
+        notifyStorageChange();
+        return { success: true, trade: newTrade };
+    }, [accountInfo, portfolio, tradeHistory, calculateTotalValue, notifyStorageChange]);
 
     /**
      * 매도 주문 처리
      * @param {string} stockCode - 종목 코드
      * @param {string} stockName - 종목 이름
      * @param {number} quantity - 매도 수량
-     * @returns {Promise<boolean>} 매도 성공 여부
+     * @returns {Promise<{success: boolean, trade?: TradeHistory}>} 매도 성공 여부와 거래 정보
      */
     const sellStock = useCallback(async (stockCode, stockName, quantity) => {
         const existingStock = portfolio.find(item => item.stockCode === stockCode);
 
         // 보유 주식 확인
         if (!existingStock || existingStock.quantity < quantity) {
-            alert('매도 가능한 수량이 부족합니다.');
-            return false;
+            await Swal.fire({
+                icon: 'error',
+                title: '매도 수량 부족',
+                text: '매도 가능한 수량이 부족합니다.',
+                timer: 5000
+            });
+            return { success: false };
         }
 
         // 현재가 조회
         const currentPrice = await fetchCurrentPrice(stockCode);
         if (!currentPrice) {
-            alert('현재가 조회에 실패했습니다.');
-            return false;
+            await Swal.fire({
+                icon: 'error',
+                title: '현재가 조회 실패',
+                text: '현재가 조회에 실패했습니다.',
+                timer: 5000
+            });
+            return { success: false };
         }
 
         const totalAmount = quantity * currentPrice;
@@ -300,7 +365,7 @@ export const useMockStorage = () => {
             stockName,
             quantity,
             price: currentPrice,
-            timestamp: new Date().toISOString(),
+            timestamp: getKSTString(),
             total: totalAmount
         };
 
@@ -320,7 +385,7 @@ export const useMockStorage = () => {
                         marketValue: (item.quantity - quantity) * currentPrice,
                         unrealizedProfit: ((item.quantity - quantity) * currentPrice) - ((item.quantity - quantity) * item.avgPrice),
                         profitRate: ((currentPrice - item.avgPrice) / item.avgPrice) * 100,
-                        lastUpdate: new Date().toISOString()
+                        lastUpdate: getKSTString()
                     }
                     : item
             );
@@ -330,30 +395,67 @@ export const useMockStorage = () => {
         const updatedAccount = {
             ...accountInfo,
             balance: accountInfo.balance + totalAmount,
-            lastUpdate: new Date().toISOString()
+            lastUpdate: getKSTString()
         };
 
-        // 한 번에 모든 상태 업데이트
+        // 거래 내역 배열 생성
+        const updatedTradeHistory = [...tradeHistory, newTrade];
+
+        // 상태 업데이트
         setAccountInfo(updatedAccount);
         setPortfolio(updatedPortfolio);
-        setTradeHistory(prev => [...prev, newTrade]);
+        setTradeHistory(updatedTradeHistory);
         calculateTotalValue(updatedPortfolio);
 
         // 로컬스토리지 업데이트
-        localStorage.setItem('stockAccount', JSON.stringify(updatedAccount));
-        localStorage.setItem('stockPortfolio', JSON.stringify(updatedPortfolio));
-        localStorage.setItem('stockTradeHistory', JSON.stringify([...tradeHistory, newTrade]));
+        localStorage.setItem(STORAGE_KEYS.ACCOUNT, JSON.stringify(updatedAccount));
+        localStorage.setItem(STORAGE_KEYS.PORTFOLIO, JSON.stringify(updatedPortfolio));
+        localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(updatedTradeHistory));
 
-        return true;
-    }, [accountInfo, portfolio, tradeHistory, calculateTotalValue]);
+        notifyStorageChange();
+        return { success: true, trade: newTrade };
+    }, [accountInfo, portfolio, tradeHistory, calculateTotalValue, notifyStorageChange]);
+
+    /**
+     * 특정 종목의 보유 수량 조회
+     * @param {string} stockCode - 종목 코드
+     * @returns {number} 보유 수량 (미보유시 0)
+     */
+    const getStockQuantity = useCallback((stockCode) => {
+        const stock = portfolio.find(item => item.stockCode === stockCode);
+        return stock ? stock.quantity : 0;
+    }, [portfolio]);
+
+    /**
+     * 가장 최근 거래 내역 조회
+     * @param {string} [stockCode] - 종목 코드 (선택적)
+     * @returns {TradeHistory|null} 최근 거래 내역 (없으면 null)
+     */
+    const getLatestTrade = useCallback((stockCode = null) => {
+        if (tradeHistory.length === 0) return null;
+
+        if (stockCode) {
+            // 특정 종목의 최근 거래 내역
+            const stockTrades = tradeHistory.filter(trade => trade.stockCode === stockCode);
+            const latestTrade = stockTrades[stockTrades.length - 1];
+            return latestTrade || null;
+        }
+
+        // 전체 거래 중 가장 최근 거래
+        const latestTrade = tradeHistory[tradeHistory.length - 1];
+        return latestTrade || null;
+    }, [tradeHistory]);
 
     return {
         accountInfo,
         portfolio,
         tradeHistory,
         totalValue,
+        isLoading,
         initializeAccount,
         buyStock,
-        sellStock
+        sellStock,
+        getStockQuantity,
+        getLatestTrade
     };
 };

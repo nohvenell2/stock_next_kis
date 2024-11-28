@@ -1,5 +1,7 @@
 import FavoriteButton from '@/components/favoriteButton/FavoriteButton'
 import styles from './StockTitle.module.scss'
+import BuyButton from '@/components/mockButton/BuyButton'
+import SellButton from '@/components/mockButton/SellButton'
 export default function StockTitle({data}){
     const {symbol, market, price, stock_name, change, rate, currency} = data
     const change_sign = Number(rate) > 0? '+':''
@@ -17,6 +19,8 @@ export default function StockTitle({data}){
                 <div className={styles.change} style={{color: change_sign == '+'? 'red' : 'blue'}}>{`${change_sign}${Number(change).toLocaleString()}`}</div>
                 <div className={styles.rate} style={{color: change_sign == '+'? 'red' : 'blue'}}>{`(${change_diag}${Math.abs(Number(rate))}%)`}</div>
                 <FavoriteButton symbol={symbol} stock_name={stock_name} market={market}/>
+                <BuyButton stockCode={symbol} stockName={stock_name} />
+                <SellButton stockCode={symbol} stockName={stock_name} />
             </div>
         </div>
     )
