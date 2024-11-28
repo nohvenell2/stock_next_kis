@@ -4,7 +4,6 @@
 	background-color: #282c34;
 	color: white;
 	display: flex;
-	justify-content: space-around;
 	align-items: center;
 	height:60px;
 }
@@ -26,6 +25,7 @@
 .stock-selector-wrapper {
     width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	max-width: 900px;
+	min-width: 200px;
 }
 .favorites {
 	width: 300px;
