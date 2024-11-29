@@ -82,12 +82,12 @@ export default function MockDashboard() {
                                 <span>{accountInfo?.balance?.toLocaleString()}원</span>
                             </div>
                             <div>
-                                <span>투자금액</span>
-                                <span>{totalValue?.invested?.toLocaleString()}원</span>
-                            </div>
-                            <div>
                                 <span>총 자산</span>
                                 <span>{totalValue?.totalValue?.toLocaleString()}원</span>
+                            </div>
+                            <div>
+                                <span>투자금액</span>
+                                <span>{totalValue?.invested?.toLocaleString()}원</span>
                             </div>
                             <div>
                                 <span>투자 평가금액</span>

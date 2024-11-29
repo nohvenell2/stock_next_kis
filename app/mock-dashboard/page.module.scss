@@ -5,23 +5,59 @@
 }
 
 .title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: center;
+    position: relative;
+    color: #1a237e;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: linear-gradient(to right, #2196F3, #1a237e);
+        border-radius: 2px;
+    }
 }
 
 .accountSection, .portfolioSection {
     background: white;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(33, 150, 243, 0.1);
+    
+    &:hover {
+        box-shadow: 0 8px 15px rgba(33, 150, 243, 0.1);
+        transform: translateY(-3px);
+    }
 
     h2 {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 15px;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #1a237e;
+        position: relative;
+        padding-left: 15px;
+        
+        &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: #2196F3;
+            border-radius: 2px;
+        }
     }
 }
 
@@ -29,11 +65,28 @@
     div {
         display: flex;
         justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+        transition: all 0.2s ease;
 
+        &:hover {
+            background-color: rgba(33, 150, 243, 0.02);
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
         &:last-child {
             border-bottom: none;
+        }
+        
+        span:first-child {
+            color: #666;
+            font-weight: 500;
+        }
+        
+        span:last-child:not(.profit):not(.loss) {
+            font-weight: 600;
+            color: #1a237e;
         }
     }
 }
@@ -112,11 +165,20 @@
 }
 
 .profit {
-    color: #f44336;
+    color: #f44336 !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+    
+    &::before {
+        content: '+';
+        margin-right: 2px;
+    }
 }
 
 .loss {
-    color: #2196f3;
+    color: #2196f3 !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
 }
 
 .loading {
