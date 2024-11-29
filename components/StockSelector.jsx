@@ -3,9 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation'
 import Select from 'react-select';
 function StockSelector({ symbols, symbolsData, market }){
-    let base_url;
-    if (market == 'kospi'){base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_KOSPI_URL}/`}
-    else if (market == 'snp500'){base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_SNP500_URL}/`}
+    const base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock/`
     const router = useRouter()
     const [Loaded,setLoaded] = useState(false)
     const [selectedOption, setSelectedOption] = useState(null);

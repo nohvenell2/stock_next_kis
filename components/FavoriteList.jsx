@@ -14,9 +14,7 @@ export default function FavoriteList() {
             <ul className={styles.favoriteList}>
                 {favorites.map((stock, i) => {
                     const { code, name, market } = stock
-                    let base_url;
-                    if (market == 'KRX') { base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_KOSPI_URL}/` }
-                    else { base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/${process.env.NEXT_PUBLIC_SNP500_URL}/` }
+                    const base_url = `${process.env.NEXT_PUBLIC_SITE_URL}/stock/`
                     return (
                         <div className={styles.favoriteList__item} key={i}>
                             <Link className={styles.favoriteList__item__Link} key={i} href={base_url + code}>

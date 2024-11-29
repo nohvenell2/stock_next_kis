@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from './RankCard.module.scss';
 
-export default function RankCard({ market, title, data, value_color }) {
+export default function RankCard({ title, data, value_color }) {
     const valueStyle = {
         color: value_color || '#4B5563'
     };
@@ -12,7 +12,7 @@ export default function RankCard({ market, title, data, value_color }) {
             <ul className={styles.list}>
                 {data.map((d, i) => (
                     <li key={i} className={styles.listItem}>
-                        <Link href={`/${market}/${encodeURIComponent(d[0])}`}>
+                        <Link href={`/stock/${encodeURIComponent(d[0])}`}>
                             <span className={styles.rank}>
                                 <span className={styles.rankNumber}>
                                     {i + 1}
