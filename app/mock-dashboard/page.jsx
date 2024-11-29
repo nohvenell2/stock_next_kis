@@ -16,8 +16,8 @@ export default function MockDashboard() {
                 <div className={styles.stockInfo}>
                     <h3>{item.stockName}</h3>
                     <p>보유수량: {item.quantity}주</p>
-                    <p>평균단가: {item.avgPrice.toLocaleString()}원</p>
-                    <p>현재가: {item.currentPrice.toLocaleString()}원</p>
+                    <p>평균단가: {Number(item.avgPrice).toLocaleString()}원</p>
+                    <p>현재가: {Number(item.currentPrice).toLocaleString()}원</p>
                     <p className={item.profitRate > 0 ? styles.profit : styles.loss}>
                         수익률: {item.profitRate.toFixed(2)}%
                     </p>
