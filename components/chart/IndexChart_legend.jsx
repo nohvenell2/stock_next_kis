@@ -1,13 +1,12 @@
 "use client"
+import styles from './IndexChart_legend.module.scss'
+
 export default function IndexChartLegend({ chartTitle, cursorData }) {
-    //console.log(chartTitle)
     return (
-        <div className="absolute left-4 z-10 bg-white p-4 rounded-lg shadow-lg opacity-90">
-            <div className="text-xl font-semibold text-gray-800 mb-2">{chartTitle}</div>
-                <div className="flex flex-row gap-6 text-sm text-gray-700 justify-center">
-                    <div className="flex flex-col items-start text-lg">
-                        <span>{cursorData?.value}</span>
-                </div>
+        <div className={styles.legendContainer}>
+            <div className={styles.title}>{chartTitle}</div>
+            <div className={styles.valueContainer}>
+                <span>{cursorData?.value.toFixed(2)}</span>
             </div>
         </div>
     )

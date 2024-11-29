@@ -1,23 +1,19 @@
 /* 전체 탑바 스타일 */
 .top-bar {
-	position: fixed;
-	top: 0;
 	width: 100%;
 	background-color: #282c34;
 	color: white;
 	display: flex;
-	justify-content: space-around;
 	align-items: center;
-	padding: 10px 20px;
-	box-shadow: 0 4px 2px -2px gray;
-	z-index: 1000;
+	height:60px;
 }
 
 /* 비율 설정 (1:6:1) */
 .title {
-	width: 200px;
+	width: 300px;
 	font-size: 24px;
-	font-weight: bold;;
+	font-weight: bold;
+	display: flex;
 	justify-content: center;
 }
 
@@ -29,9 +25,12 @@
 .stock-selector-wrapper {
     width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	max-width: 900px;
+	min-width: 200px;
 }
-.buttons {
-	width: 200px;
+.favorites {
+	width: 300px;
 	display: flex;
 	justify-content: center;
+	height: 100%;
+	position: relative;
 }

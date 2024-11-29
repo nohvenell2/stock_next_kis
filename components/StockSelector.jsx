@@ -32,6 +32,7 @@ function StockSelector({ symbols, symbolsData, market }){
             isClearable
             escapeClearsValue
             value={selectedOption}
+            menuPortalTarget={document.body}
         />
     );
 };
@@ -49,5 +50,6 @@ const customStyles = {
         backgroundColor: state.isFocused ? 'lightblue' : 'white',
         color: 'black',
     }),
+    menuPortal: provided => ({ ...provided, zIndex: 15 }),
 };
 export default StockSelector;

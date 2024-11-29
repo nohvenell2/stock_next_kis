@@ -2,6 +2,7 @@ import './TopBar.css';
 import StockSelector from './StockSelector';
 import Link from 'next/link';
 import { snp500_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
+import TopBarRightButtons from './TopBarRightButtons';
 function TopBar_snp500(){
 	//RENDER
 	return (
@@ -23,7 +24,9 @@ function TopBar_snp500(){
                     <StockSelector symbols={snp500_symbols} symbolsData={symbolsData} market='snp500'/> 
                 </div>
 			</div>
-			<div className='buttons'></div>
+			<div className='favorites'>
+				<TopBarRightButtons/>
+			</div>
 		</div>
 	);
 };

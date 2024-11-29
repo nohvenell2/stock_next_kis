@@ -1,10 +1,11 @@
 //todo stock info card 컴포넌트 추가
-import PriceChart from "@/components/chart/PriceChart";
 import { symbolsData } from "@/util/db/fetch_symbols.js";
 import { chartPrice_daily } from "@/util/chartdata_price_daily.js";
 import { chartData_info } from "@/util/chartdata_info.js";
-import StockInfo from "@/components/StockInfoCard";
-import styles from './styles.module.css'
+import styles from './styles.module.scss'
+import PriceChart from "@/components/chart/PriceChart";
+import StockTitle from "@/components/stock_title/StockTitle";
+import StockInfo from "@/components/stock_info/StockInfo";
 export function generateMetadata({params:{id}}){
     const symbol = decodeURIComponent(id)
     return ({
@@ -18,10 +19,13 @@ const StockPage = async ({params:{id, market}}) => {
     const info_data = await chartData_info(symbol)
     return (
         <div className={styles.container}>
-            <div className={styles.item}>
-                <PriceChart market={market} chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
+            <div className={styles.title}>
+                <StockTitle data={info_data} />
             </div>
-            <div className={styles.item}>
+            <div className={styles.chart}>
+                <PriceChart market={market} chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data} stockCode={symbol}/>
+            </div>
+            <div className={styles.info}>
                 <StockInfo data={info_data} />
             </div>
         </div>
