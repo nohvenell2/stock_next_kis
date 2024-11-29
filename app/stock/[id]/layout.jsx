@@ -13,7 +13,7 @@ export function generateMetadata({ params: { id } }) {
 }
 export default function PageLayout({ children, params: { id } }) {
     const symbol = decodeURIComponent(id)
-    const market = symbolsData[symbol].market == 'kospi' ? 'kospi' : 'snp500'
+    const market = symbolsData[symbol].market == 'KRX' ? 'kospi' : 'snp500'
     return (
         <div>
             <div className={styles.topbar}>
