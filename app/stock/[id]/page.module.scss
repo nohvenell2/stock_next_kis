@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    flex-direction: column;
+
+    .title{
+        padding: 1rem;
+        align-self: flex-start;
+    }
+    .chart{
+        padding: 1rem;
+        overflow: hidden;
+    }
+    .info{
+        padding: 1rem;
+    }
+}
+.topbar{
+    position:sticky;
+    top:0;
+    z-index: 11;
+}

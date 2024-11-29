@@ -29,10 +29,10 @@ export default async function Page({ params: { market } }) {
             <div className="flex-grow mt-5 max-w-7xl">
                 <IndexChart data_index={index_data} chartTitle={chart_title} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 md">
-                    <RankCard market={market} title="시가총액 순위" data={capitalRank} />
-                    <RankCard market={market} title="거래 순위" data={volumeRank} />
-                    <RankCard market={market} title="상승률 순위" data={increaseRateRank} value_color={"#DC2626"} />
-                    <RankCard market={market} title="하락률 순위" data={decreaseRateRank} value_color={"#2563EB"} />
+                    <RankCard title="시가총액 순위" data={capitalRank} />
+                    <RankCard title="거래 순위" data={volumeRank} />
+                    <RankCard title="상승률 순위" data={increaseRateRank} value_color={"#DC2626"} />
+                    <RankCard title="하락률 순위" data={decreaseRateRank} value_color={"#2563EB"} />
                 </div>
             </div>
         </div>
