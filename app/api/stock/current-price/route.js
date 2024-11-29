@@ -1,5 +1,7 @@
 import { fetchSingleCurrentPrice, fetchMultipleCurrentPrices } from '@/util/db/fetch_current_price';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * GET 요청 처리
  * @param {Request} request

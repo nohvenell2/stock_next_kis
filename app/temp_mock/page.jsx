@@ -2,6 +2,7 @@
 
 import { useMockStorage } from '@/hooks/mock/useMockStorage';
 import { useState } from 'react';
+
 export default function StockTestPage() {
     const { accountInfo, portfolio, tradeHistory, totalValue, initializeAccount, buyStock, sellStock } = useMockStorage();
     const [tradeInput, setTradeInput] = useState({

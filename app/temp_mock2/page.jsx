@@ -2,6 +2,7 @@
 import { useMockStorage } from '@/hooks/mock/useMockStorage'
 
 // 계좌 정보만 보여주는 컴포넌트
+
 function AccountStatus() {
     const { accountInfo, isLoading } = useMockStorage();
 

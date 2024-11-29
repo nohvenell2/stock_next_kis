@@ -52,7 +52,7 @@ export default function SellButton({ stockCode, stockName }) {
                 Swal.fire({
                     icon: 'success',
                     title: '매도 완료',
-                    html: `${stockName} ${quantity}주, 총 ${trade.total}원이 매도되었습니다. <br>잔액: ${balance}원`,
+                    html: `${stockName} ${quantity}주, 총 ${toString(trade.total).toLocaleString()}원이 매도되었습니다. <br>잔액: ${toString(balance).toLocaleString()}원`,
                     timer: 10000
                 });
             }

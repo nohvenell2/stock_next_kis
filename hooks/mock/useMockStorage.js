@@ -12,7 +12,9 @@ async function updatePortfolioPrices(portfolio) {
 
     try {
         const symbols = portfolio.map(item => item.stockCode).join(',');
-        const response = await fetch(`/api/stock/current-price?symbols=${symbols}`);
+        const response = await fetch(`/api/stock/current-price?symbols=${symbols}`, {
+            cache: 'no-store'
+        });
         const currentPrices = await response.json();
 
         return portfolio.map(item => {
@@ -54,12 +56,12 @@ const isUpdateTime = (now) => {
     // 평일 체크
     if (now.getDay() === 0 ) return false;
 
-    // 장 시작 시간대 (9:30 ~ 9:45)
+    // S&P500 업데이트 시간 (9:30 ~ 9:45)
     if (hour === 9 && minute >= 30 && minute <= 45) {
         return true;
     }
     
-    // 장 마감 시간대 (16:00 ~ 16:15)
+    // KOSPI 업데이트 시간 (16:00 ~ 16:15)
     if (hour === 16 && minute >= 0 && minute <= 15) {
         return true;
     }
@@ -73,7 +75,9 @@ const isUpdateTime = (now) => {
  */
 const fetchCurrentPrice = async (stockCode) => {
     try {
-        const response = await fetch(`/api/stock/current-price?symbols=${stockCode}`);
+        const response = await fetch(`/api/stock/current-price?symbols=${stockCode}`, {
+            cache: 'no-store'
+        });
         const data = await response.json();
         const price = Number(data[stockCode]);
         return price;
@@ -89,15 +93,35 @@ const STORAGE_KEYS = {
     PORTFOLIO: 'stockPortfolio',
     HISTORY: 'stockTradeHistory'
 };
+// 전역 인터벌 상태 관리
+let isSubscribed = false;
+let globalIntervalId = null;
 /**
  * 주식 모의투자 데이터를 관리하는 커스텀 훅
  * @returns {{
  *   accountInfo: AccountInfo | null,
  *   portfolio: PortfolioItem[],
  *   tradeHistory: TradeHistory[],
+ *   totalValue: {
+ *     invested: number,
+ *     marketValue: number,
+ *     unrealizedProfit: number,
+ *     profitRate: number
+ *   },
+ *   isLoading: boolean,
  *   initializeAccount: (initialBalance: number) => void,
- *   buyStock: (stockCode: string, stockName: string, quantity: number) => boolean,
- *   sellStock: (stockCode: string, stockName: string, quantity: number) => boolean
+ *   buyStock: (stockCode: string, stockName: string, quantity: number) => Promise<{
+ *     success: boolean,
+ *     trade?: TradeHistory,
+ *     balance?: number
+ *   }>,
+ *   sellStock: (stockCode: string, stockName: string, quantity: number) => Promise<{
+ *     success: boolean,
+ *     trade?: TradeHistory,
+ *     balance?: number
+ *   }>,
+ *   getStockQuantity: (stockCode: string) => number,
+ *   getLatestTrade: (stockCode?: string) => TradeHistory | null
  * }}
  */
 export const useMockStorage = () => {
@@ -112,7 +136,7 @@ export const useMockStorage = () => {
     });
     const [isLoading, setIsLoading] = useState(true);
 
-    // 변경사항을 다른 컴포넌트에 알리는 ���수
+    // 변경사항을 다른 컴포넌트에 알리는 이벤트
     const notifyStorageChange = useCallback(() => {
         window.dispatchEvent(new Event(MOCK_STORAGE_CHANGE_EVENT));
     }, []);
@@ -146,19 +170,26 @@ export const useMockStorage = () => {
             const storedPortfolio = localStorage.getItem(STORAGE_KEYS.PORTFOLIO);
             const storedHistory = localStorage.getItem(STORAGE_KEYS.HISTORY);
 
-            if (storedAccount) setAccountInfo(JSON.parse(storedAccount));
-            if (storedPortfolio) {
-                const portfolioData = JSON.parse(storedPortfolio);
-                setPortfolio(portfolioData);
-                calculateTotalValue(portfolioData);
+            // 저장된 데이터가 없으면 초기화
+            if (!storedAccount || !storedPortfolio || !storedHistory) {
+                console.log('저장된 데이터가 없어 초기화를 진행합니다.');
+                initializeAccount(10000000); // 1000만원으로 초기화
+                return;
             }
-            if (storedHistory) setTradeHistory(JSON.parse(storedHistory));
+
+            // 저장된 데이터가 있으면 로드
+            setAccountInfo(JSON.parse(storedAccount));
+            const portfolioData = JSON.parse(storedPortfolio);
+            setPortfolio(portfolioData);
+            calculateTotalValue(portfolioData);
+            setTradeHistory(JSON.parse(storedHistory));
         } catch (error) {
-            console.error('Failed to load stored data:', error);
+            console.error('데이터 로드 실패:', error);
+            initializeAccount(10000000); // 에러 발생시에도 초기화
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [initializeAccount]);
 
     // 초기 로딩과 이벤트 리스너 설정
     useEffect(() => {
@@ -189,29 +220,66 @@ export const useMockStorage = () => {
         setTotalValue(total);
     }, []);
 
-    // 초기 로드시 업데이트
-    useEffect(() => {
-        const updatePrices = async () => {
-            if (portfolio.length === 0) return;
+    // 가격 업데이트 함수
+    const updatePrices = async () => {
+        const storedPortfolio = JSON.parse(localStorage.getItem(STORAGE_KEYS.PORTFOLIO) || '[]');
+        if (storedPortfolio.length === 0) return;
 
-            console.log('포트폴리오 가격 업데이트:', new Date().toLocaleString());
-            const updatedPortfolio = await updatePortfolioPrices(portfolio);
-            
+        console.log('포트폴리오 가격 업데이트 시도:', new Date().toLocaleString());
+        const updatedPortfolio = await updatePortfolioPrices(storedPortfolio);
+        
+        // 변경사항 체크
+        const hasChanges = storedPortfolio.some((oldItem, index) => {
+            const newItem = updatedPortfolio[index];
+            return oldItem.currentPrice !== newItem.currentPrice;
+        });
+
+        if (hasChanges) {
+            //debug
+            console.log('포트폴리오 가격 변경 감지됨');
             setPortfolio(updatedPortfolio);
             calculateTotalValue(updatedPortfolio);
-            localStorage.setItem('stockPortfolio', JSON.stringify(updatedPortfolio));
-        };
+            localStorage.setItem(STORAGE_KEYS.PORTFOLIO, JSON.stringify(updatedPortfolio));
+            
+            // 변경사항이 있을 때만 이벤트 발생
+            window.dispatchEvent(new Event(MOCK_STORAGE_CHANGE_EVENT));
+        } else {
+            //debug
+            console.log('포트폴리오 가격 변경 없음');
+        }
+    };
 
-        updatePrices();
+    // 인터벌 관리를 위한 useEffect
+    useEffect(() => {
+        // 인터벌이 없을 때만 생성
+        if (!isSubscribed) {
+            //debug
+            console.log('가격 업데이트 인터벌 시작');
+            isSubscribed = true;
+            
+            // 초기 업데이트
+            updatePrices();
+            
+            // 인터벌 설정
+            globalIntervalId = setInterval(() => {
+                const now = new Date();
+                if (isUpdateTime(now)) {
+                    updatePrices();
+                }
+            }, 60000);
+        }
 
-        const interval = setInterval(() => {
-            const now = new Date();
-            if (isUpdateTime(now)) {
-                updatePrices();
+        // 클린업 함수
+        return () => {
+            // 컴포넌트가 언마운트될 때 인터벌 제거
+            if (globalIntervalId) {
+                //debug
+                console.log('가격 업데이트 인터벌 종료');
+                clearInterval(globalIntervalId);
+                globalIntervalId = null;
+                isSubscribed = false;
             }
-        }, 60000);
-
-        return () => clearInterval(interval);
+        };
     }, []);
 
     /**

@@ -2,7 +2,7 @@ import './TopBar.css';
 import StockSelector from './StockSelector';
 import Link from 'next/link';
 import { kospi_symbols, symbolsData } from '@/util/db/fetch_symbols.js';
-import FavoriteList from './FavoriteList';
+import TopBarRightButtons from './TopBarRightButtons';
 function TopBar_kospi() {
 	//RENDER
 	return (
@@ -25,7 +25,7 @@ function TopBar_kospi() {
 				</div>
 			</div>
 			<div className='favorites'>
-				<FavoriteList />
+				<TopBarRightButtons/>
 			</div>
 		</div>
 	);

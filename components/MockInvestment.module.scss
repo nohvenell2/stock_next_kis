@@ -1,14 +1,14 @@
-.container{
+.container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     width: 50%;
-    .title{
+    justify-content: center;
+    .title {
         font-size: 24px;
-	    font-weight: bold;
-        align-self:center;
+        font-weight: bold;
+        align-self: center;
     }
-    .favoriteList{
+    .portfolioSimple {
         display: flex;
         flex-direction: column;
         position: absolute;
@@ -26,26 +26,14 @@
             visibility: visible;
             opacity: 1;
         }
-        .favoriteList__item{
-            width: 100%;
-            transition: all 0.2s;
-            display: grid;
-            grid-template-columns: 9fr 1fr;
-            padding-right: 15px;
-            &:hover{
-                background-color: white;
-                color: black;
-            }
-            .favoriteList__item__Link{
-                padding:15px 15px;
-                height: 100%;
-            }
-        }
     }
     &:hover{
-        .favoriteList{
+        .portfolioSimple{
             visibility: visible;
             opacity: 1;
         }
     }
 }
+
+
+
