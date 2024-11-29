@@ -10,11 +10,7 @@ import Swal from 'sweetalert2';
  * @param {string} props.text - 버튼 텍스트
  * @param {string} props.className - 추가 스타일 클래스
  */
-export default function SellButton({ stockCode, stockName, text = '매도', className = '' }) {
-    const { sellStock, getStockQuantity, isLoading } = useMockStorage();
-
-    if (isLoading) return <></>;
-
+export default function SellButton({ stockCode, stockName, text = '매도', className = '', sellStock, getStockQuantity }) {
     const handleSellClick = async () => {
         if (!getStockQuantity(stockCode)) {
             Swal.fire({
@@ -35,7 +31,9 @@ export default function SellButton({ stockCode, stockName, text = '매도', clas
                     id="quantity" 
                     class="swal2-input" 
                     min="1" 
+                    max=${getStockQuantity(stockCode)}
                     placeholder="보유 수량 : ${getStockQuantity(stockCode)} 주"
+                    style="width: 280px;"
                 >
             `,
             showCancelButton: true,
@@ -43,10 +41,17 @@ export default function SellButton({ stockCode, stockName, text = '매도', clas
             cancelButtonText: '취소',
             confirmButtonColor: '#d33',
             cancelButtonColor: '#3085d6',
+            inputAttributes: {
+                max: getStockQuantity(stockCode)
+            },
             preConfirm: () => {
                 const quantity = Swal.getPopup().querySelector('#quantity').value;
+                const maxQuantity = getStockQuantity(stockCode);
                 if (!quantity || quantity < 1) {
                     Swal.showValidationMessage('올바른 수량을 입력해주세요');
+                }
+                if (quantity > maxQuantity) {
+                    Swal.showValidationMessage(`최대 ${maxQuantity}주까지 매도 가능합니다`);
                 }
                 return Number(quantity);
             }

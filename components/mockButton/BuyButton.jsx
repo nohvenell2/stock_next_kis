@@ -10,11 +10,7 @@ import Swal from 'sweetalert2';
  * @param {string} props.text - 버튼 텍스트
  * @param {string} props.className - 추가 스타일 클래스
  */
-export default function BuyButton({ stockCode, stockName, text = '매수', className = '' }) {
-    const { buyStock, isLoading } = useMockStorage();
-
-    if (isLoading) return <></>;
-
+export default function BuyButton({ stockCode, stockName, text = '매수', className = '', buyStock }) {
     const handleBuyClick = async () => {
         const result = await Swal.fire({
             title: '매수 수량 입력',

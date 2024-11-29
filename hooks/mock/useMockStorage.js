@@ -106,7 +106,9 @@ let globalIntervalId = null;
  *     invested: number,
  *     marketValue: number,
  *     unrealizedProfit: number,
- *     profitRate: number
+ *     totalProfitRate: number,
+ *     totalValue: number,
+ *     investmentProfitRate: number 
  *   },
  *   isLoading: boolean,
  *   initializeAccount: (initialBalance: number) => void,
@@ -132,7 +134,10 @@ export const useMockStorage = () => {
         invested: 0,
         marketValue: 0,
         unrealizedProfit: 0,
-        profitRate: 0
+        profitRate: 0,
+        totalProfitRate: 0,
+        totalValue: 0,
+        investmentProfitRate: 0
     });
     const [isLoading, setIsLoading] = useState(true);
 
@@ -178,10 +183,11 @@ export const useMockStorage = () => {
             }
 
             // 저장된 데이터가 있으면 로드
-            setAccountInfo(JSON.parse(storedAccount));
+            const accountData = JSON.parse(storedAccount);
+            setAccountInfo(accountData);
             const portfolioData = JSON.parse(storedPortfolio);
             setPortfolio(portfolioData);
-            calculateTotalValue(portfolioData);
+            calculateTotalValue(portfolioData, accountData);
             setTradeHistory(JSON.parse(storedHistory));
         } catch (error) {
             console.error('데이터 로드 실패:', error);
@@ -206,23 +212,39 @@ export const useMockStorage = () => {
     }, [loadStoredData]);
 
     // 포트폴리오 총 가치 계산
-    const calculateTotalValue = useCallback((portfolioData) => {
+    const calculateTotalValue = useCallback((portfolioData, account) => {
+        console.log('포트폴리오 총 가치 계산 시작');
         const total = portfolioData.reduce((acc, item) => ({
             invested: acc.invested + (item.quantity * item.avgPrice),
             marketValue: acc.marketValue + (item.quantity * item.currentPrice),
-            unrealizedProfit: acc.unrealizedProfit + item.unrealizedProfit
+            unrealizedProfit: acc.unrealizedProfit + (item.quantity * (item.currentPrice - item.avgPrice))
         }), { invested: 0, marketValue: 0, unrealizedProfit: 0 });
 
-        total.profitRate = total.invested > 0
-            ? (total.unrealizedProfit / total.invested) * 100
+        // 투자 수익률 계산
+        total.investmentProfitRate = total.invested > 0 
+            ? (total.unrealizedProfit / total.invested) * 100 
             : 0;
 
-        setTotalValue(total);
+        total.totalValue = account.balance + total.marketValue;
+        total.totalProfitRate = account.initialBalance > 0 
+            ? ((total.totalValue / account.initialBalance) * 100) - 100
+            : 0;
+
+        return total;
     }, []);
+
+    // portfolio가 변경될 때만 실행
+    useEffect(() => {
+        if (!accountInfo || !portfolio) return;
+
+        const total = calculateTotalValue(portfolio, accountInfo);
+        setTotalValue(total);
+    }, [portfolio, calculateTotalValue]);
 
     // 가격 업데이트 함수
     const updatePrices = async () => {
         const storedPortfolio = JSON.parse(localStorage.getItem(STORAGE_KEYS.PORTFOLIO) || '[]');
+        const storedAccount = JSON.parse(localStorage.getItem(STORAGE_KEYS.ACCOUNT) || '{}');
         if (storedPortfolio.length === 0) return;
 
         console.log('포트폴리오 가격 업데이트 시도:', new Date().toLocaleString());
@@ -238,7 +260,7 @@ export const useMockStorage = () => {
             //debug
             console.log('포트폴리오 가격 변경 감지됨');
             setPortfolio(updatedPortfolio);
-            calculateTotalValue(updatedPortfolio);
+            calculateTotalValue(updatedPortfolio, storedAccount);
             localStorage.setItem(STORAGE_KEYS.PORTFOLIO, JSON.stringify(updatedPortfolio));
             
             // 변경사항이 있을 때만 이벤트 발생
@@ -379,7 +401,7 @@ export const useMockStorage = () => {
         setAccountInfo(updatedAccount);
         setPortfolio(updatedPortfolio);
         setTradeHistory(updatedTradeHistory);
-        calculateTotalValue(updatedPortfolio);
+        calculateTotalValue(updatedPortfolio, updatedAccount);
 
         // 로컬스토리지 업데이트
         localStorage.setItem(STORAGE_KEYS.ACCOUNT, JSON.stringify(updatedAccount));
@@ -473,7 +495,7 @@ export const useMockStorage = () => {
         setAccountInfo(updatedAccount);
         setPortfolio(updatedPortfolio);
         setTradeHistory(updatedTradeHistory);
-        calculateTotalValue(updatedPortfolio);
+        calculateTotalValue(updatedPortfolio, updatedAccount);
 
         // 로컬스토리지 업데이트
         localStorage.setItem(STORAGE_KEYS.ACCOUNT, JSON.stringify(updatedAccount));
