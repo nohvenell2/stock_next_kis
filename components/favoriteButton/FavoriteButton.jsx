@@ -39,7 +39,7 @@ export default function FavoriteButton({symbol, stock_name, market}){
         }
     }
     return (
-        <button onClick={handleClick} aria-label={isFavorite ? "즐겨찾기 삭제" : "즐겨찾기 추가"}>
+        <button onClick={handleClick} aria-label={isFavorite ? "즐겨찾기 삭제" : "즐겨찾기 추가"} className="text-[24px]">
             {isFavorite(symbol)? '🧡': '🤍'}
         </button>
     )

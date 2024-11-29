@@ -2,7 +2,15 @@
 import { useMockStorage } from "@/hooks/mock/useMockStorage";
 import Swal from 'sweetalert2';
 
-export default function SellButton({ stockCode, stockName }) {
+/**
+ * 매도 버튼 컴포넌트
+ * @param {Object} props
+ * @param {string} props.stockCode - 종목 코드
+ * @param {string} props.stockName - 종목 이름
+ * @param {string} props.text - 버튼 텍스트
+ * @param {string} props.className - 추가 스타일 클래스
+ */
+export default function SellButton({ stockCode, stockName, text = '매도', className = '' }) {
     const { sellStock, getStockQuantity, isLoading } = useMockStorage();
 
     if (isLoading) return <></>;
@@ -52,7 +60,7 @@ export default function SellButton({ stockCode, stockName }) {
                 Swal.fire({
                     icon: 'success',
                     title: '매도 완료',
-                    html: `${stockName} ${quantity}주, 총 ${toString(trade.total).toLocaleString()}원이 매도되었습니다. <br>잔액: ${toString(balance).toLocaleString()}원`,
+                    html: `${stockName} ${quantity}주, 총 ${Number(trade.total).toLocaleString()}원이 매도되었습니다. <br>잔액: ${Number(balance).toLocaleString()}원`,
                     timer: 10000
                 });
             }
@@ -62,10 +70,9 @@ export default function SellButton({ stockCode, stockName }) {
     return (
         <button 
             onClick={handleSellClick} 
-            className={`px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 
-                ${getStockQuantity(stockCode) > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
+            className={`${className} ${getStockQuantity(stockCode) > 0 ? '' : 'opacity-50 cursor-not-allowed'}`}
         >
-            매도
+            {text}
         </button>
     );
 }

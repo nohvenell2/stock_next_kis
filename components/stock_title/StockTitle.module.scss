@@ -32,4 +32,9 @@
     .rate{
         font-size: x-large;
     }
+    .buttons_container{
+        display: flex;
+        gap: 1rem;
+        align-items: end;
+    }
 }

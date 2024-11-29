@@ -23,7 +23,7 @@ const StockPage = async ({params:{id, market}}) => {
                 <StockTitle data={info_data} />
             </div>
             <div className={styles.chart}>
-                <PriceChart market={market} chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data}/>
+                <PriceChart market={market} chartTitle={stock_name} data_ohlc={price_data} data_volume={volume_data} stockCode={symbol}/>
             </div>
             <div className={styles.info}>
                 <StockInfo data={info_data} />

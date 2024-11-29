@@ -1,12 +1,13 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { createChart, LineStyle } from 'lightweight-charts';
 import PriceChartLegend from './PriceChart_legend';
 import { modTime } from '@/util/format_time';
 import { formatBigNumber_kr, formatFloatInt, formatNumberComma } from '@/util/format_number';
 import ButtonDefault from './button/ButtonDefault';
-import StockTitle from '../stock_title/StockTitle';
-const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
+import { useMockStorage } from '@/hooks/mock/useMockStorage';
+const PriceChart = ({ market, chartTitle, data_ohlc, data_volume, stockCode }) => {
+    const { tradeHistory } = useMockStorage();
     const chartContainerRef = useRef();
     const chartRef = useRef();
     const candlestickSeriesRef = useRef();
@@ -28,6 +29,19 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
     function volume_formatter(volume) {
         return formatBigNumber_kr(volume, '', ' 주')
     }
+    // 거래 내역을 마커 데이터로 변환하는 함수
+    const getMarkers = useCallback(() => {
+        return tradeHistory
+            .filter(trade => trade.stockCode === stockCode)
+            .map(trade => ({
+                time: trade.timestamp.split('T')[0],
+                position: trade.type === 'BUY' ? 'belowBar' : 'aboveBar',
+                color: trade.type === 'BUY' ? '#B8001F' : '#161D6F',
+                shape: trade.type === 'BUY' ? 'arrowUp' : 'arrowDown',
+                text: `${trade.type} ${trade.quantity}주`,
+                size: 1.5
+            }));
+    }, [tradeHistory, stockCode, currency_symbol]);
     useEffect(() => {
         const chart = createChart(chartContainerRef.current, {
             layout: {
@@ -135,11 +149,27 @@ const PriceChart = ({ market, chartTitle, data_ohlc, data_volume }) => {
         };
         window.addEventListener('resize', handleResize);
 
+        // 캔들스틱 차트에 마커 추가
+        candlestickSeries.setMarkers(getMarkers());
+
+        // 라인 차트에도 마커 추가
+        lineSeries.setMarkers(getMarkers());
+
         return () => {
             window.removeEventListener('resize', handleResize);
             chart.remove();
         };
     }, [data_ohlc, data_volume]);
+
+    // 거래 내역이 변경될 때마다 두 차트 모두 마커 업데이트
+    useEffect(() => {
+        if (candlestickSeriesRef.current) {
+            candlestickSeriesRef.current.setMarkers(getMarkers());
+        }
+        if (lineSeriesRef.current) {
+            lineSeriesRef.current.setMarkers(getMarkers());
+        }
+    }, [tradeHistory, getMarkers]);
 
     useEffect(() => {
         if (chartType === 'Candle') {

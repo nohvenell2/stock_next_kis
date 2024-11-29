@@ -2,7 +2,15 @@
 import { useMockStorage } from "@/hooks/mock/useMockStorage";
 import Swal from 'sweetalert2';
 
-export default function BuyButton({ stockCode, stockName }) {
+/**
+ * 매수 버튼 컴포넌트
+ * @param {Object} props
+ * @param {string} props.stockCode - 종목 코드
+ * @param {string} props.stockName - 종목 이름
+ * @param {string} props.text - 버튼 텍스트
+ * @param {string} props.className - 추가 스타일 클래스
+ */
+export default function BuyButton({ stockCode, stockName, text = '매수', className = '' }) {
     const { buyStock, isLoading } = useMockStorage();
 
     if (isLoading) return <></>;
@@ -43,8 +51,8 @@ export default function BuyButton({ stockCode, stockName }) {
                 Swal.fire({
                     icon: 'success',
                     title: '매수 완료',
-                    html: `${stockName} ${quantity}주, 총 ${toString(trade.total).toLocaleString()}원이 매수되었습니다. <br>잔액: ${toString(balance).toLocaleString()}원`,
-                    timer: 10000
+                        html: `${stockName} ${quantity}주, 총 ${Number(trade.total).toLocaleString()}원이 매수되었습니다. <br>잔액: ${Number(balance).toLocaleString()}원`,
+                        timer: 10000
                 });
             }
         }
@@ -53,9 +61,9 @@ export default function BuyButton({ stockCode, stockName }) {
     return (
         <button 
             onClick={handleBuyClick} 
-            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className={`${className}`}
         >
-            매수
+            {text}
         </button>
     );
 }

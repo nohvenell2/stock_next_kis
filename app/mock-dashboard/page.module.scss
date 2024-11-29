@@ -1,0 +1,128 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.accountSection, .portfolioSection {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    h2 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+}
+
+.accountInfo {
+    div {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+}
+
+.portfolioItem {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+
+    .stockInfo {
+        margin-bottom: 15px;
+
+        h3 {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 5px 0;
+        }
+    }
+
+    .actions {
+        display: flex;
+        gap: 10px;
+    }
+}
+
+.buyButton, .sellButton {
+    flex: 1;
+    padding: 8px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.2s;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.buyButton {
+    background-color: #2196F3;
+}
+
+.sellButton {
+    background-color: #F44336;
+}
+
+.profit {
+    color: #f44336;
+}
+
+.loss {
+    color: #2196f3;
+}
+
+.loading {
+    text-align: center;
+    padding: 20px;
+}
+
+.footerButtons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.historyButton, .resetButton {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    text-align: center;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}
+
+.historyButton {
+    background-color: #4CAF50;
+}
+
+.resetButton {
+    background-color: #FF5722;
+}
