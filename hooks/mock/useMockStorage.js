@@ -40,8 +40,9 @@ async function updatePortfolioPrices(portfolio) {
 }
 const getKSTString = () => {
     const now = new Date();
-    const kstDate = new Date(now.getTime() + (9 * 60 * 60 * 1000));
-    return kstDate.toISOString();
+    const utcNow = now.getTime() + (now.getTimezoneOffset() * 60 * 1000);
+    const kstNow = utcNow + (9 * 60 * 60 * 1000);
+    return new Date(kstNow).toISOString();
 };
 /**
  * 업데이트 시간 체크
